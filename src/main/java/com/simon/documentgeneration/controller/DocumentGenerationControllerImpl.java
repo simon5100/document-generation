@@ -25,6 +25,6 @@ public class DocumentGenerationControllerImpl implements DocumentGenerationContr
                 .build());
         headers.setContentLength(bytes.length);
 
-        return new ResponseEntity<>(bytes, headers,HttpStatus.OK);
+        return new ResponseEntity<>(bytes, headers, HttpStatus.OK);
     }
 }

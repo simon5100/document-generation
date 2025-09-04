@@ -3,18 +3,21 @@ package com.simon.documentgeneration.util;
 import com.itextpdf.text.Font;
 import com.itextpdf.text.FontFactoryImp;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.stereotype.Component;
 
 @Component
 @AllArgsConstructor
-@NoArgsConstructor
+@Getter
+@Setter
 public class FontFactoryCustom {
 
-    private static final String TYPE_TIMES_NEW_ROMAN = "fonts/Times New Roman.ttf";
-    private static final String EN_COD = "cp1251";
-    private static final float NORMAl_SIZE = 14f;
-    private static final float SMALL_SIZE = 10f;
+    private final String TYPE_TIMES_NEW_ROMAN = "fonts/Times New Roman.ttf";
+    private final String EN_COD = "cp1251";
+    private final float NORMAl_SIZE = 14f;
+    private final float SMALL_SIZE = 10f;
 
     public Font getNormalFont() {
         return new FontFactoryImp().getFont(TYPE_TIMES_NEW_ROMAN, EN_COD, NORMAl_SIZE);
@@ -29,6 +32,6 @@ public class FontFactoryCustom {
     }
 
     public Font getNormalSmallFont() {
-        return new FontFactoryImp().getFont(TYPE_TIMES_NEW_ROMAN, EN_COD, SMALL_SIZE, Font.UNDERLINE);
+        return new FontFactoryImp().getFont(TYPE_TIMES_NEW_ROMAN, EN_COD, SMALL_SIZE);
     }
 }
