@@ -27,57 +27,37 @@ public class DocumentGenerationServiceImpl implements DocumentGenerationService 
             Document document = new Document(PageSize.A4,
                     pointsInCM.cm(2.5F),
                     pointsInCM.cm(1F),
-                    pointsInCM.cm(2F),
+                    pointsInCM.cm(1F),
                     pointsInCM.cm(2F));
             //делаем поток для записи
             PdfWriter.getInstance(document, baos);
             //открывем документ для записи
             document.open();
 
-            PdfPTable pdfPTable = new PdfPTable(2);
-            pdfPTable.setWidthPercentage(100);
-            pdfPTable.setWidths(new int[]{40, 60});
-            pdfPTable.getDefaultCell().setBorder(Rectangle.NO_BORDER);
 
-            PdfPCell leftCell = new PdfPCell(new Paragraph(" "));
-            leftCell.setBorder(Rectangle.NO_BORDER);
-            pdfPTable.addCell(leftCell);
 
-            Paragraph paragraph1 = paragraphFactory.getFretboard("УТВЕРЖДАЮ\n" +
-                    "Начальник управления по обеспечению\n" +
-                    "деятельности мировых судей\n" +
-                    "Новосибирской области\n" +
-                    "\n" +
-                    "          ______________  А.В. Артеменко",
-                    font.getNormalFont());
-            Paragraph paragraph2 = paragraphFactory.getinterlinearParagraph(
+            PdfPTable pdfPTable = paragraphFactory.getFretboard(
+                    "УТВЕРЖДАЮ\n" +
+                            "Начальник управления по обеспечению\n" +
+                            "деятельности мировых судей\n" +
+                            "Новосибирской области\n" +
+                            "\n" +
+                            "          ______________  А.В. Артеменко",
                     "(подпись)",
-                    font.getNormalSmallFont());
-            paragraph2.setIndentationLeft(95);
-
-            Paragraph paragraph3 = paragraphFactory.getFretboard(
                     "«      »            202      г.",
-                    font.getNormalFont());
-
-            PdfPCell rightCell = new PdfPCell();
-            rightCell.addElement(paragraph1);
-            rightCell.addElement(paragraph2);
-            rightCell.addElement(paragraph3);
-            rightCell.setBorder(Rectangle.NO_BORDER);
-            rightCell.setHorizontalAlignment(Element.ALIGN_CENTER);
-            pdfPTable.addCell(rightCell);
+                    font.getNormalFont(),
+                    font.getNormalSmallFont()
+                    );
 
             document.add(pdfPTable);
-            document.add(paragraphFactory.getEmptyParagraph());
 
             Paragraph title = paragraphFactory.getHeading("ДОЛЖНОСТНОЙ РЕГЛАМЕНТ\n" +
                     "СЕКРЕТАРЯ СУДЕБНОГО ЗАСЕДАНИЯ АППАРАТА МИРОВЫХ СУДЕЙ\n" +
                     "ЖЕЛЕЗНОДОРОЖНОГО СУДЕБНОГО РАЙОНА УПРАВЛЕНИЯ ПО\n" +
                     "ОБЕСПЕЧЕНИЮ ДЕЯТЕЛЬНОСТИ МИРОВЫХ СУДЕЙ\n" +
-                    "НОВОСИБИРСКОЙ ОБЛАСТИ\n", font.getNormalBoldFont());
+                    "НОВОСИБИРСКОЙ ОБЛАСТИ", font.getNormalBoldFont());
 
             document.add(title);
-            document.add(paragraphFactory.getEmptyParagraph());
 
             Paragraph heading = paragraphFactory.getHeading(
                     "I. Общие положения",
@@ -85,7 +65,6 @@ public class DocumentGenerationServiceImpl implements DocumentGenerationService 
             );
 
             document.add(heading);
-            document.add(paragraphFactory.getEmptyParagraph());
 
             Paragraph paragraph4 = paragraphFactory.getDefaultParagraph(
                     "1. Должность государственной гражданской службы Новосибирской области " +
@@ -170,7 +149,71 @@ public class DocumentGenerationServiceImpl implements DocumentGenerationService 
 
             document.add(paragraph9);
 
+            chunk = new Chunk("________________________", new Font(Font.FontFamily.TIMES_ROMAN));
 
+            Paragraph snoska = new Paragraph(chunk);
+            snoska.setAlignment(Element.ALIGN_LEFT);
+            snoska.setSpacingAfter(6);
+
+            document.add(snoska);
+
+            Paragraph paragraphSnoska = new Paragraph();
+            paragraphSnoska.setAlignment(Element.ALIGN_LEFT);
+            paragraphSnoska.setLeading(10f * 1.2f);
+
+            Phrase phrase = new Phrase();
+
+            chunk = new Chunk("1", new Font(Font.FontFamily.TIMES_ROMAN, 8));
+            chunk.setTextRise(5);
+            phrase.add(chunk);
+            chunk = new Chunk(
+                    " В соответствии с Реестром должностей государственной гражданской службы Новосибирской области " +
+                    "(приложение к Закону Новосибирской области от 06.04.2005 № 287-ОЗ «О Реестре должностей государственной " +
+                    "гражданской службы Новосибирской области»).\n",
+                    font.getNormalSmallFont());
+            phrase.add(chunk);
+
+            chunk = new Chunk("2", new Font(Font.FontFamily.TIMES_ROMAN, 8));
+            chunk.setTextRise(5);
+            phrase.add(chunk);
+            chunk = new Chunk(
+                    " В соответствии со справочником квалификационных требований к специальностям, направлениям подготовки (к " +
+                    "укрупненным группам специальностей и направлений подготовки), к профессиональному уровню, которые " +
+                            "необходимы для замещения должностей государственной гражданской службы, с учетом области и вида " +
+                            "профессиональной служебной деятельности государственных гражданских служащих, предусмотренным частью 8 " +
+                            "статьи 12 Федерального закона от 27.07.2004 № 79-ФЗ «О государственной гражданской службе Российской " +
+                            "Федерации» (далее – Справочник).\n", font.getNormalSmallFont());
+            phrase.add(chunk);
+
+            chunk = new Chunk("3", new Font(Font.FontFamily.TIMES_ROMAN, 8));
+            chunk.setTextRise(5);
+            phrase.add(chunk);
+            chunk = new Chunk(" В соответствии со Справочником.", font.getNormalSmallFont());
+            phrase.add(chunk);
+
+            paragraphSnoska.add(phrase);
+
+            document.add(paragraphSnoska);
+
+
+            document.setPageSize(PageSize.A4);
+            document.setMargins(pointsInCM.cm(2.5F),
+                    pointsInCM.cm(1F),
+                    pointsInCM.cm(2F),
+                    pointsInCM.cm(2F));
+            document.newPage();
+
+            document.add(new Paragraph("osidjfgoisjg", font.getNormalFont()));
+
+
+            document.setPageSize(PageSize.A4);
+            document.setMargins(pointsInCM.cm(2.5F),
+                    pointsInCM.cm(1F),
+                    pointsInCM.cm(2F),
+                    pointsInCM.cm(2F));
+            document.newPage();
+
+            document.add(new Paragraph("osidjfgoisjg", font.getNormalFont()));
 
 
 

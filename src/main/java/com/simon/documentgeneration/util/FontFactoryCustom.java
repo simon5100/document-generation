@@ -4,7 +4,6 @@ import com.itextpdf.text.Font;
 import com.itextpdf.text.FontFactoryImp;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.stereotype.Component;
 
