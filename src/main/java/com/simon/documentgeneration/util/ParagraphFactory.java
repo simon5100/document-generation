@@ -9,6 +9,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.stereotype.Component;
 
+import java.util.LinkedList;
+import java.util.List;
+
 @Component
 @AllArgsConstructor
 @NoArgsConstructor
@@ -18,18 +21,21 @@ public class ParagraphFactory {
 
     private static float singleInterval = 1.2f;
     private Paragraph paragraph;
+    private Paragraph line;
+    private List<Paragraph> paragraphs;
     private PdfPTable tableForFretboard;
     private PdfPCell cellForFretboard;
 
 
 
 
-    public PdfPTable getFretboard(String textMain1, String textInterlinear, String textMain2, Font fontMain, Font fontInterlinear) throws DocumentException {
+    public PdfPTable getFretboard(Chunk[] fretboard) throws DocumentException {
 
         tableForFretboard = new PdfPTable(2);
         tableForFretboard.setWidthPercentage(100);
         tableForFretboard.setWidths(new int[]{40, 60});
         tableForFretboard.getDefaultCell().setBorder(Rectangle.NO_BORDER);
+
         cellForFretboard = new PdfPCell(new Phrase(" "));
         cellForFretboard.setBorder(Rectangle.NO_BORDER);
         tableForFretboard.addCell(cellForFretboard);
@@ -37,61 +43,84 @@ public class ParagraphFactory {
         cellForFretboard = new PdfPCell();
         cellForFretboard.setBorder(Rectangle.NO_BORDER);
         cellForFretboard.setHorizontalAlignment(Element.ALIGN_CENTER);
-
-        paragraph = new Paragraph(textMain1, fontMain);
-        paragraph.setLeading(fontMain.getSize() * singleInterval);
-        paragraph.setAlignment(Element.ALIGN_CENTER);
-        paragraph.setSpacingBefore(0);
-        paragraph.setSpacingAfter(0);
-
-        cellForFretboard.addElement(paragraph);
-
-        paragraph = new Paragraph(textInterlinear, fontInterlinear);
-        paragraph.setLeading(fontMain.getSize() * singleInterval);
-        paragraph.setSpacingBefore(0);
-        paragraph.setSpacingAfter(0);
-        paragraph.setIndentationLeft(95);
-
-        cellForFretboard.addElement(paragraph);
-
-        paragraph = new Paragraph(textMain2, fontMain);
-        paragraph.setLeading(fontMain.getSize() * singleInterval);
-        paragraph.setAlignment(Element.ALIGN_CENTER);
-        paragraph.setSpacingBefore(0);
-        paragraph.setSpacingAfter(0);
-
-        cellForFretboard.addElement(paragraph);
+        for (Chunk chunk : fretboard) {
+            paragraph = new Paragraph();
+            paragraph.add(chunk);
+            paragraph.setLeading(chunk.getFont().getSize() * singleInterval);
+            paragraph.setSpacingBefore(0);
+            paragraph.setSpacingAfter(0);
+            if (chunk.getFont().getSize() == 14f) {
+                paragraph.setAlignment(Element.ALIGN_CENTER);
+            } else {
+                paragraph.setIndentationLeft(95);
+            }
+            cellForFretboard.addElement(paragraph);
+        }
 
         tableForFretboard.addCell(cellForFretboard);
 
         return tableForFretboard;
+    }
 
+    public Paragraph getTitle (Chunk title) {
+
+        paragraph = new Paragraph(title);
+        paragraph.setLeading(title.getFont().getSize() * singleInterval);
+        paragraph.setAlignment(Element.ALIGN_CENTER);
+        paragraph.setSpacingBefore(8);
+        paragraph.setSpacingAfter(0);
+        return paragraph;
     }
 
 
-    public Paragraph getHeading(String text, Font font)  {
 
-        paragraph = new Paragraph(text, font);
+    public Paragraph getSection(Chunk section)  {
+
+        paragraph = new Paragraph(section);
         paragraph.setAlignment(Element.ALIGN_CENTER);
-        paragraph.setLeading(font.getSize() * singleInterval);
+        paragraph.setLeading(section.getFont().getSize() * singleInterval);
         paragraph.setSpacingAfter(8);
         paragraph.setSpacingBefore(8);
 
         return paragraph;
     }
 
-    public Paragraph getDefaultParagraph(String text, Font font, float indentCM) {
-        paragraph = new Paragraph(text, font);
+    public List<Paragraph> getDefaultParagraph(List<Chunk> chunks, float indentCM) {
+        paragraphs = new LinkedList<>();
+
+        paragraph = new Paragraph();
         paragraph.setAlignment(Element.ALIGN_JUSTIFIED);
-        paragraph.setLeading(font.getSize() * singleInterval);
         paragraph.setFirstLineIndent(indentCM);
         paragraph.setSpacingAfter(0);
         paragraph.setSpacingBefore(0);
 
-        return paragraph;
+        line = new Paragraph();
+        line.setAlignment(Element.ALIGN_LEFT);
+        line.setSpacingAfter(6);
+
+        for (Chunk chunk : chunks) {
+            paragraph.setLeading(chunk.getFont().getSize() * singleInterval);
+            if (chunk.getContent().lastIndexOf("______") != -1) {
+                line.add(chunk);
+                continue;
+            }
+
+            paragraph.add(chunk);
+            if (chunk.getContent().lastIndexOf("\n") != -1) {
+                paragraphs.add(paragraph);
+
+                paragraph = new Paragraph();
+                paragraph.setAlignment(Element.ALIGN_JUSTIFIED);
+                paragraph.setFirstLineIndent(indentCM);
+                paragraph.setSpacingAfter(0);
+                paragraph.setSpacingBefore(0);
+            }
+        }
+
+        return paragraphs;
     }
 
-    public Paragraph getinterlinearParagraph(String text, Font font) {
+    public Paragraph getInterlinearParagraph(String text, Font font) {
         paragraph = new Paragraph(text, font);
         paragraph.setLeading(font.getSize() * singleInterval);
         paragraph.setSpacingAfter(0);
