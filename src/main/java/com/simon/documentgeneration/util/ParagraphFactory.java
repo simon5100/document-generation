@@ -21,13 +21,11 @@ public class ParagraphFactory {
 
     private static float singleInterval = 1.2f;
     private Paragraph paragraph;
-    private Paragraph line;
+    private Paragraph lineFootnote;
+    private Paragraph paragraphFootnote;
     private List<Paragraph> paragraphs;
     private PdfPTable tableForFretboard;
     private PdfPCell cellForFretboard;
-
-
-
 
     public PdfPTable getFretboard(Chunk[] fretboard) throws DocumentException {
 
@@ -72,8 +70,6 @@ public class ParagraphFactory {
         return paragraph;
     }
 
-
-
     public Paragraph getSection(Chunk section)  {
 
         paragraph = new Paragraph(section);
@@ -94,16 +90,34 @@ public class ParagraphFactory {
         paragraph.setSpacingAfter(0);
         paragraph.setSpacingBefore(0);
 
-        line = new Paragraph();
-        line.setAlignment(Element.ALIGN_LEFT);
-        line.setSpacingAfter(6);
+        lineFootnote = new Paragraph();
+        lineFootnote.setAlignment(Element.ALIGN_LEFT);
+        lineFootnote.setSpacingAfter(6);
+
+        paragraphFootnote = new Paragraph();
+        paragraphFootnote.setAlignment(Element.ALIGN_LEFT);
+        paragraphFootnote.setSpacingAfter(0);
+        paragraphFootnote.setSpacingBefore(0);
+
+        Phrase phrase = new Phrase();
+
 
         for (Chunk chunk : chunks) {
             paragraph.setLeading(chunk.getFont().getSize() * singleInterval);
+
             if (chunk.getContent().lastIndexOf("______") != -1) {
-                line.add(chunk);
+                lineFootnote.add(chunk);
+                paragraphs.add(lineFootnote);
+                continue;
+            } else if (chunk.getFont().getSize() == 8 ||
+                      (chunk.getContent().lastIndexOf("\n") != -1 &&
+                       chunk.getFont().getSize() == 10)){
+                paragraphFootnote.setLeading(chunk.getFont().getSize() * singleInterval);
+                phrase.add(chunk);
+                paragraphs.add(paragraphFootnote);
                 continue;
             }
+
 
             paragraph.add(chunk);
             if (chunk.getContent().lastIndexOf("\n") != -1) {
@@ -114,8 +128,11 @@ public class ParagraphFactory {
                 paragraph.setFirstLineIndent(indentCM);
                 paragraph.setSpacingAfter(0);
                 paragraph.setSpacingBefore(0);
+
             }
         }
+
+
 
         return paragraphs;
     }

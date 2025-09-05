@@ -96,11 +96,12 @@ public class Chunks {
                 chunkParagraph.add(new Chunk(" – 03-3-4-002-54.\n", normalFont));
                 chunkParagraph.add(new Chunk("2. Область профессиональной служебной деятельности государственного " +
                         "гражданского служащего Новосибирской области", normalFont));
-                chunkParagraph.add(new Chunk("2", smallFont).
+                chunkParagraph.add(new Chunk(String.valueOf(countFootnote++), smallFont).
                         setTextRise(5));
                 chunkParagraph.add(new Chunk(" (далее – гражданский служащий): организация судопроизводства.\n", normalFont));
                 chunkParagraph.add(new Chunk("3. Вид профессиональной служебной деятельности гражданского служащего", normalFont));
-                chunkParagraph.add(new Chunk(String.valueOf(countFootnote++), smallFont));
+                chunkParagraph.add(new Chunk(String.valueOf(countFootnote++), smallFont).
+                        setTextRise(5));
                 chunkParagraph.add(new Chunk(": организационно – правовое обеспечение деятельности судов.\n", normalFont));
                 chunkParagraph.add(new Chunk("4. Назначение на должность и освобождение от должности секретаря " +
                         "судебного заседания аппарата мировых судей Железнодорожного судебного района осуществляются " +
@@ -109,8 +110,37 @@ public class Chunks {
                         , normalFont));
                 chunkParagraph.add(new Chunk("5. Секретарь судебного заседания непосредственно подчиняется", normalFont));
                 chunkParagraph.add(new Chunk(" мировому судье 4-го судебного участка Железнодорожного судебного района", boldFont));
-                chunkParagraph.add(new Chunk(" (далее – мировой судья).", normalFont));
+                chunkParagraph.add(new Chunk(" (далее – мировой судья).\n", normalFont));
+                lineFootnote.setFont(normalFont);
                 chunkParagraph.add(lineFootnote);
+                chunkParagraph.add(new Chunk("1", fontFootnote).
+                        setTextRise(5));
+                chunkParagraph.add(new Chunk("В соответствии с Реестром должностей государственной гражданской службы Новосибирской области " +
+                        "(приложение к Закону Новосибирской области от 06.04.2005 № 287-ОЗ «О Реестре должностей государственной " +
+                        "гражданской службы Новосибирской области»).\n", smallFont));
+                chunkParagraph.add(new Chunk("2", fontFootnote).
+                        setTextRise(5));
+                chunkParagraph.add(new Chunk(" В соответствии со справочником квалификационных требований к специальностям, направлениям подготовки (к " +
+                        "укрупненным группам специальностей и направлений подготовки), к профессиональному уровню, которые " +
+                        "необходимы для замещения должностей государственной гражданской службы, с учетом области и вида " +
+                        "профессиональной служебной деятельности государственных гражданских служащих, предусмотренным частью 8 " +
+                        "статьи 12 Федерального закона от 27.07.2004 № 79-ФЗ «О государственной гражданской службе Российской " +
+                        "Федерации» (далее – Справочник).\n", smallFont));
+                chunkParagraph.add(new Chunk("3", fontFootnote).
+                        setTextRise(5));
+                chunkParagraph.add(new Chunk(" В соответствии со Справочником.\n", smallFont));
+                chunkParagraph.add(new Chunk("6. Секретарь судебного заседания обязан исполнять должностные обязанности:\n", normalFont));
+                chunkParagraph.add(new Chunk("секретаря судебного участка аппарата мировых судей Железнодорожного судебного " +
+                        "района г. Новосибирска, осуществляющего свою профессиональную деятельность на  4-м судебном участке " +
+                        "Железнодорожного судебного района г. Новосибирска, в период его временного отсутствия.\n", normalFont));
+
+
+
+
+
+
+
+
 
 
                 break;
