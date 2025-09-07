@@ -35,13 +35,8 @@ public class Header extends PdfPageEventHelper {
 
         PdfContentByte cb = writer.getDirectContent();
 
-        //header content
         String headerContent = "" + numberPage;
 
-        //header content
-        /*
-         * Header
-         */
         ColumnText.showTextAligned(cb, Element.ALIGN_CENTER, new Phrase(headerContent, numberHeader),
                 (document.left() + document.right())/2, document.top() + 10, 0);
 

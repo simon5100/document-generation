@@ -92,6 +92,7 @@ public class ParagraphFactory {
 
         lineFootnote = new Paragraph();
         lineFootnote.setAlignment(Element.ALIGN_LEFT);
+        lineFootnote.setSpacingBefore(6);
         lineFootnote.setSpacingAfter(6);
 
         paragraphFootnote = new Paragraph();
@@ -99,29 +100,35 @@ public class ParagraphFactory {
         paragraphFootnote.setSpacingAfter(0);
         paragraphFootnote.setSpacingBefore(0);
 
-        Phrase phrase = new Phrase();
 
 
         for (Chunk chunk : chunks) {
             paragraph.setLeading(chunk.getFont().getSize() * singleInterval);
 
+
             if (chunk.getContent().lastIndexOf("______") != -1) {
                 lineFootnote.add(chunk);
+
                 paragraphs.add(lineFootnote);
                 continue;
             } else if (chunk.getFont().getSize() == 8 ||
                       (chunk.getContent().lastIndexOf("\n") != -1 &&
                        chunk.getFont().getSize() == 10)){
                 paragraphFootnote.setLeading(chunk.getFont().getSize() * singleInterval);
-                phrase.add(chunk);
-                paragraphs.add(paragraphFootnote);
-                continue;
+                paragraphFootnote.add(chunk);
             }
 
 
             paragraph.add(chunk);
-            if (chunk.getContent().lastIndexOf("\n") != -1) {
-                paragraphs.add(paragraph);
+            if (chunk.getContent().lastIndexOf("\n") != -1 &&
+                    chunk.getFont().getSize() == 10) {
+
+                paragraphs.add(paragraphFootnote);
+
+                paragraphFootnote = new Paragraph();
+                paragraphFootnote.setAlignment(Element.ALIGN_LEFT);
+                paragraphFootnote.setSpacingAfter(0);
+                paragraphFootnote.setSpacingBefore(0);
 
                 paragraph = new Paragraph();
                 paragraph.setAlignment(Element.ALIGN_JUSTIFIED);
@@ -129,6 +136,14 @@ public class ParagraphFactory {
                 paragraph.setSpacingAfter(0);
                 paragraph.setSpacingBefore(0);
 
+            } else if (chunk.getContent().lastIndexOf("\n") != -1) {
+                paragraphs.add(paragraph);
+
+                paragraph = new Paragraph();
+                paragraph.setAlignment(Element.ALIGN_JUSTIFIED);
+                paragraph.setFirstLineIndent(indentCM);
+                paragraph.setSpacingAfter(0);
+                paragraph.setSpacingBefore(0);
             }
         }
 
