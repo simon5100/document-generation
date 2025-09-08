@@ -8,8 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.stereotype.Component;
-
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 @Component
@@ -22,7 +21,6 @@ public class ParagraphFactory {
     private static float singleInterval = 1.2f;
     private Paragraph paragraph;
     private Paragraph lineFootnote;
-    private Paragraph paragraphFootnote;
     private List<Paragraph> paragraphs;
     private PdfPTable tableForFretboard;
     private PdfPCell cellForFretboard;
@@ -81,95 +79,68 @@ public class ParagraphFactory {
         return paragraph;
     }
 
-    public List<Paragraph> getDefaultParagraph(List<Chunk> chunks, float indentCM) {
-        paragraphs = new LinkedList<>();
+    public List<Paragraph> getDefaultParagraph(List<Chunk> chunks, float indentCM, FootnoteWarehouse footnotes, FontFactoryCustom font, UnderLineTextWarehouse underLineText) {
+        paragraphs = new ArrayList<>();
+
+        lineFootnote = new Paragraph(footnotes.getLineFootnote());
+        lineFootnote.setAlignment(Element.ALIGN_LEFT);
+        lineFootnote.setSpacingAfter(6);
+        lineFootnote.setSpacingBefore(6);
+
 
         paragraph = new Paragraph();
         paragraph.setAlignment(Element.ALIGN_JUSTIFIED);
         paragraph.setFirstLineIndent(indentCM);
+        paragraph.setLeading(font.getNORMAl_SIZE() * singleInterval);
         paragraph.setSpacingAfter(0);
         paragraph.setSpacingBefore(0);
 
-        lineFootnote = new Paragraph();
-        lineFootnote.setAlignment(Element.ALIGN_LEFT);
-        lineFootnote.setSpacingBefore(6);
-        lineFootnote.setSpacingAfter(6);
-
-        paragraphFootnote = new Paragraph();
-        paragraphFootnote.setAlignment(Element.ALIGN_LEFT);
-        paragraphFootnote.setSpacingAfter(0);
-        paragraphFootnote.setSpacingBefore(0);
-
-
-
         for (Chunk chunk : chunks) {
-            paragraph.setLeading(chunk.getFont().getSize() * singleInterval);
 
-
-            if (chunk.getContent().lastIndexOf("______") != -1) {
-                lineFootnote.add(chunk);
-
+            if (chunk.getContent().equals("FootnotePage1")) {
                 paragraphs.add(lineFootnote);
+                paragraphs.add(footnotes.getFootnotePage1(font));
                 continue;
-            } else if (chunk.getFont().getSize() == 8 ||
-                      (chunk.getContent().lastIndexOf("\n") != -1 &&
-                       chunk.getFont().getSize() == 10)){
-                paragraphFootnote.setLeading(chunk.getFont().getSize() * singleInterval);
-                paragraphFootnote.add(chunk);
+            } else if (chunk.getContent().equals("FootnotePage2")){
+                lineFootnote.setSpacingBefore(20);
+                paragraphs.add(lineFootnote);
+                paragraphs.add(footnotes.getFootnotePage2(font));
+                continue;
+            } else if (chunk.getContent().equals("FootnotePage10")) {
+                paragraphs.add(lineFootnote);
+                paragraphs.add(footnotes.getFootnotePage10(font));
+                continue;
+            }
+
+            if (chunk.getContent().equals("UnderLineText1")) {
+                paragraphs.add(underLineText.getUnderLineText1(font.getNormalSmallFont()));
+                continue;
+            } else if (chunk.getContent().equals("UnderLineText2")) {
+                paragraphs.add(underLineText.getUnderLineText2(font.getNormalSmallFont()));
+                continue;
             }
 
 
             paragraph.add(chunk);
-            if (chunk.getContent().lastIndexOf("\n") != -1 &&
-                    chunk.getFont().getSize() == 10) {
-
-                paragraphs.add(paragraphFootnote);
-
-                paragraphFootnote = new Paragraph();
-                paragraphFootnote.setAlignment(Element.ALIGN_LEFT);
-                paragraphFootnote.setSpacingAfter(0);
-                paragraphFootnote.setSpacingBefore(0);
-
-                paragraph = new Paragraph();
-                paragraph.setAlignment(Element.ALIGN_JUSTIFIED);
-                paragraph.setFirstLineIndent(indentCM);
-                paragraph.setSpacingAfter(0);
-                paragraph.setSpacingBefore(0);
-
-            } else if (chunk.getContent().lastIndexOf("\n") != -1) {
+            if (chunk.getContent().lastIndexOf("\n") != -1) {
                 paragraphs.add(paragraph);
 
                 paragraph = new Paragraph();
                 paragraph.setAlignment(Element.ALIGN_JUSTIFIED);
                 paragraph.setFirstLineIndent(indentCM);
+                paragraph.setLeading(font.getNORMAl_SIZE() * singleInterval);
                 paragraph.setSpacingAfter(0);
                 paragraph.setSpacingBefore(0);
+
             }
         }
-
-
 
         return paragraphs;
     }
 
-    public Paragraph getInterlinearParagraph(String text, Font font) {
-        paragraph = new Paragraph(text, font);
-        paragraph.setLeading(font.getSize() * singleInterval);
-        paragraph.setSpacingAfter(0);
-        paragraph.setSpacingBefore(0);
-        return paragraph;
-    }
-
-
     public Paragraph getEmptyParagraph() {
-        paragraph = new Paragraph(" ");
-        paragraph.setSpacingAfter(0);
-        paragraph.setSpacingBefore(0);
+
+
         return paragraph;
     }
-
-
-
-
-
 }

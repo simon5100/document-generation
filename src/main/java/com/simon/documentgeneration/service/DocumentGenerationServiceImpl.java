@@ -3,25 +3,25 @@ package com.simon.documentgeneration.service;
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
-import com.simon.documentgeneration.util.Chunks;
-import com.simon.documentgeneration.util.ConvertPointsInCM;
-import com.simon.documentgeneration.util.FontFactoryCustom;
-import com.simon.documentgeneration.util.Header;
-import com.simon.documentgeneration.util.ParagraphFactory;
+import com.simon.documentgeneration.util.*;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 import java.io.ByteArrayOutputStream;
 import java.util.List;
 
+@Log4j2
 @Service
 @RequiredArgsConstructor
 public class DocumentGenerationServiceImpl implements DocumentGenerationService  {
 
+    private final FootnoteWarehouse footnotes;
     private final ConvertPointsInCM pointsInCM;
     private final FontFactoryCustom font;
     private final ParagraphFactory paragraphFactory;
     private final Chunks chunks;
-    private final Header header;
+    private final HeaderNumberPage header;
+    private final UnderLineTextWarehouse underLineText;
 
     @Override
     public byte[] generatedDocument2() {
@@ -34,8 +34,9 @@ public class DocumentGenerationServiceImpl implements DocumentGenerationService 
                     pointsInCM.cm(2F));
             //делаем поток для записи
             PdfWriter writer = PdfWriter.getInstance(document, baos);
-            int pageNumber = 1;
+            writer.setPageEvent(header);
             //открывем документ для записи
+
             document.open();
 
             PdfPTable pdfPTable = paragraphFactory.getFretboard(
@@ -58,9 +59,12 @@ public class DocumentGenerationServiceImpl implements DocumentGenerationService 
                                 font.getNormalFont(),
                                 font.getNormalBoldFont(),
                                 font.getNormalSmallFont(),
-                                font.getFootnoteFont()
+                                font.getNormalUNnderLineFont()
                         ),
-                        pointsInCM.cm(1.25f)
+                        pointsInCM.cm(1.25f),
+                        footnotes,
+                        font,
+                        underLineText
                 );
 
                 for (Paragraph paragraph : paragraphs) {
