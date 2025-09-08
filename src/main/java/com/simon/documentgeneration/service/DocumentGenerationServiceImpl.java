@@ -72,6 +72,12 @@ public class DocumentGenerationServiceImpl implements DocumentGenerationService 
                 }
             }
 
+            pdfPTable = paragraphFactory.getFooterParagraph(
+                    chunks.getFooter(font.getNormalFont(), font.getNormalSmallFont(), font.getNormalUNnderLineFont())
+            );
+
+            document.add(pdfPTable);
+
             document.close();
             return baos.toByteArray();
         } catch (Exception e) {

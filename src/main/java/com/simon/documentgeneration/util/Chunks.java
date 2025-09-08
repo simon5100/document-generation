@@ -15,6 +15,8 @@ public class Chunks {
 
     private Chunk[] chunkFretboard;
 
+    private Chunk[] chunkFooter;
+
     private Chunk chunkFootnote;
 
     private Chunk chunkTitle;
@@ -356,4 +358,58 @@ public class Chunks {
         }
         return chunkParagraph;
     }
+
+    public Chunk[] getFooter (Font normalFont, Font fontInterlinear, Font fontNormaLinear) {
+
+        chunkFooter = new Chunk[33];
+
+        chunkFooter[0] = new Chunk("Мировой судья 4-го судебного участка " +
+                "Железнодорожного судебного района " +
+                "г. Новосибирска", normalFont);
+        chunkFooter[1] = new Chunk("_____________", normalFont);
+        chunkFooter[2] = new Chunk("Д.А. Грановская", fontNormaLinear);
+        chunkFooter[3] = new Chunk("(должность непосредственного руководителя гражданского служащего)", fontInterlinear);
+        chunkFooter[4] = new Chunk("(подпись)", fontInterlinear);
+        chunkFooter[5] = new Chunk("(инициалы, фамилия)", fontInterlinear);
+        chunkFooter[6] = new Chunk("\nСОГЛАСОВАНО:\n" +
+                "Мировой судья-организатор " +
+                "Железнодорожного судебного района " +
+                "г. Новосибирска                                    ", normalFont);
+        chunkFooter[7] = new Chunk("_____________");
+        chunkFooter[8] = new Chunk("О.А. Петраш", fontNormaLinear);
+        chunkFooter[9] = new Chunk("(должность непосредственного руководителя гражданского служащего)", fontInterlinear);
+        chunkFooter[10] = new Chunk("(подпись)", fontInterlinear);
+        chunkFooter[11] = new Chunk("(инициалы, фамилия)", fontInterlinear);
+        chunkFooter[12] = new Chunk("\nСОГЛАСОВАНО:\n" +
+                "Начальник отдела правового обеспечения " +
+                "управления по обеспечению деятельности " +
+                "мировых судей Новосибирской области", normalFont);
+        chunkFooter[13] = new Chunk("_____________");
+        chunkFooter[14] = new Chunk("Н.В. Жукова", fontNormaLinear);
+        chunkFooter[15] = new Chunk(" ");
+        chunkFooter[16] = new Chunk("(подпись)", fontInterlinear);
+        chunkFooter[17] = new Chunk("(инициалы, фамилия)", fontInterlinear);
+        chunkFooter[18] = new Chunk("«____» ___________ 20___ г.", normalFont);
+        chunkFooter[19] = new Chunk(" ");
+        chunkFooter[20] = new Chunk(" ");
+        chunkFooter[21] = new Chunk("С должностным регламентом ознакомлен:", normalFont);
+        chunkFooter[22] = new Chunk(" ");
+        chunkFooter[23] = new Chunk(" ");
+        chunkFooter[24] = new Chunk("__________________________", normalFont);
+        chunkFooter[25] = new Chunk("_____________", normalFont);
+        chunkFooter[26] = new Chunk("_____________", normalFont);
+        chunkFooter[27] = new Chunk("(должность гражданского служащего)", fontInterlinear);
+        chunkFooter[28] = new Chunk("(подпись)", fontInterlinear);
+        chunkFooter[29] = new Chunk("(инициалы, фамилия)", fontInterlinear);
+        chunkFooter[30] = new Chunk("«____» ___________ 20___ г.", normalFont);
+        chunkFooter[31] = new Chunk(" ");
+        chunkFooter[32] = new Chunk(" ");
+
+        return chunkFooter;
+    }
+
+
+
+
+
 }

@@ -2,15 +2,18 @@ package com.simon.documentgeneration.util;
 
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPRow;
 import com.itextpdf.text.pdf.PdfPTable;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.List;
 
+@Log4j2
 @Component
 @AllArgsConstructor
 @NoArgsConstructor
@@ -138,9 +141,38 @@ public class ParagraphFactory {
         return paragraphs;
     }
 
-    public Paragraph getEmptyParagraph() {
+    public PdfPTable getFooterParagraph(Chunk[] fretboard) throws DocumentException {
 
+        tableForFretboard = new PdfPTable(3);
+        tableForFretboard.setWidthPercentage(100);
+        tableForFretboard.setWidths(new int[]{55, 25, 35});
+        tableForFretboard.getDefaultCell().setBorder(Rectangle.NO_BORDER);
 
-        return paragraph;
+        for (int i = 0; i < fretboard.length; i+=3) {
+            paragraph = new Paragraph(fretboard[i]);
+            paragraph.setLeading(fretboard[i].getFont().getSize() * 1.2f);
+            paragraph.setSpacingBefore(6);
+            PdfPCell cell1 = new PdfPCell(paragraph);
+            cell1.setBorder(Rectangle.NO_BORDER);
+            cell1.setHorizontalAlignment(Element.ALIGN_LEFT);
+
+            paragraph = new Paragraph(fretboard[i+1]);
+            PdfPCell cell2 = new PdfPCell(paragraph);
+            cell2.setBorder(Rectangle.NO_BORDER);
+            cell2.setHorizontalAlignment(Element.ALIGN_CENTER);
+            cell2.setVerticalAlignment(Element.ALIGN_BOTTOM);
+
+            paragraph = new Paragraph(fretboard[i+2]);
+            PdfPCell cell3 = new PdfPCell(paragraph);
+            cell3.setBorder(Rectangle.NO_BORDER);
+            cell3.setHorizontalAlignment(Element.ALIGN_RIGHT);
+            cell3.setVerticalAlignment(Element.ALIGN_BOTTOM);
+
+            tableForFretboard.addCell(cell1);
+            tableForFretboard.addCell(cell2);
+            tableForFretboard.addCell(cell3);
+
+        }
+        return tableForFretboard;
     }
 }
