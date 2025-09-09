@@ -15,7 +15,7 @@ public class DocumentGenerationControllerImpl implements DocumentGenerationContr
     @Override
     public ResponseEntity<byte[]> downlandFile() {
 
-        byte[] bytes = documentGenerationService.generatedDocument2();
+        byte[] bytes = documentGenerationService.generatedDocument();
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_PDF);

@@ -17,8 +17,6 @@ public class Chunks {
 
     private Chunk[] chunkFooter;
 
-    private Chunk chunkFootnote;
-
     private Chunk chunkTitle;
 
     private Chunk[] chunkSection;
@@ -27,7 +25,7 @@ public class Chunks {
 
     private static int countFootnote = 1;
 
-    public Chunk[] getChunkFretboard(Font normalFont, Font fontInterlinear) {
+    public Chunk[] getChunkFretboard(FontFactoryCustom font) {
         chunkFretboard = new Chunk[3];
         chunkFretboard[0] = new Chunk(
                 "УТВЕРЖДАЮ\n" +
@@ -35,48 +33,48 @@ public class Chunks {
                         "деятельности мировых судей\n" +
                         "Новосибирской области\n" +
                         "\n" +
-                        "          ______________  А.В. Артеменко\n", normalFont);
-        chunkFretboard[1] = new Chunk("(подпись)", fontInterlinear);
-        chunkFretboard[2] = new Chunk("«      »            202      г.", normalFont);
+                        "          ______________  А.В. Артеменко\n", font.getNormalFont());
+        chunkFretboard[1] = new Chunk("(подпись)", font.getSmallFont());
+        chunkFretboard[2] = new Chunk("«      »            202      г.", font.getNormalFont());
 
         return chunkFretboard;
     }
 
-    public Chunk getChunkTitle(Font boldFont) {
+    public Chunk getChunkTitle(FontFactoryCustom font) {
         return chunkTitle = new Chunk(
                 "ДОЛЖНОСТНОЙ РЕГЛАМЕНТ\n" +
                         "СЕКРЕТАРЯ СУДЕБНОГО ЗАСЕДАНИЯ АППАРАТА МИРОВЫХ СУДЕЙ\n" +
                         "ЖЕЛЕЗНОДОРОЖНОГО СУДЕБНОГО РАЙОНА УПРАВЛЕНИЯ ПО\n" +
                         "ОБЕСПЕЧЕНИЮ ДЕЯТЕЛЬНОСТИ МИРОВЫХ СУДЕЙ\n" +
                         "НОВОСИБИРСКОЙ ОБЛАСТИ",
-                boldFont
+                font.getNormalBoldFont()
         );
     }
 
-    public Chunk[] getChunkSection(Font boldFont) {
+    public Chunk[] getChunkSection(FontFactoryCustom font) {
         chunkSection = new Chunk[9];
-        chunkSection[0] = new Chunk("I. Общие положения", boldFont);
+        chunkSection[0] = new Chunk("I. Общие положения", font.getNormalBoldFont());
         chunkSection[1] = new Chunk("II. Квалификационные требования для замещения должности " +
-                "гражданской службы", boldFont);
-        chunkSection[2] = new Chunk("III. Должностные обязанности", boldFont);
+                "гражданской службы", font.getNormalBoldFont());
+        chunkSection[2] = new Chunk("III. Должностные обязанности", font.getNormalBoldFont());
         chunkSection[3] = new Chunk("IV. Перечень вопросов, по которым гражданский служащий вправе или обязан самостоятельно принимать " +
-                "управленческие и иные решения", boldFont);
+                "управленческие и иные решения", font.getNormalBoldFont());
         chunkSection[4] = new Chunk("V. Перечень вопросов, по которым гражданский служащий вправе или обязан участвовать в подготовке " +
-                "проектов нормативных правовых актов и (или) проектов управленческих и иных решений", boldFont);
+                "проектов нормативных правовых актов и (или) проектов управленческих и иных решений", font.getNormalBoldFont());
         chunkSection[5] = new Chunk("VI. Сроки и процедуры подготовки, рассмотрения проектов управленческих и иных решений, порядок " +
-                "согласования и принятия данных решений", boldFont);
+                "согласования и принятия данных решений", font.getNormalBoldFont());
         chunkSection[6] = new Chunk("VII. Порядок служебного взаимодействия гражданского служащего в связи " +
                 "с исполнением им должностных обязанностей с гражданскими служащими того же государственного органа, " +
-                "гражданскими служащими иных государственных органов, другими гражданами, а также организациями", boldFont);
+                "гражданскими служащими иных государственных органов, другими гражданами, а также организациями", font.getNormalBoldFont());
         chunkSection[7] = new Chunk("VIII. Перечень государственных услуг (видов деятельности), " +
                 "оказываемых по запросам граждан и организаций в соответствии " +
-                "с административным регламентом (иным нормативным правовым актом) государственного органа", boldFont);
-        chunkSection[8] = new Chunk("IX. Показатели эффективности и результативности профессиональной служебной деятельности", boldFont);
+                "с административным регламентом (иным нормативным правовым актом) государственного органа", font.getNormalBoldFont());
+        chunkSection[8] = new Chunk("IX. Показатели эффективности и результативности профессиональной служебной деятельности", font.getNormalBoldFont());
 
         return chunkSection;
     }
 
-    public List<Chunk> getChunksParagraph(int i, Font normalFont, Font boldFont, Font smallFont, Font normalUnderLineFont) {
+    public List<Chunk> getChunksParagraph(int i, Font normalFont, Font boldFont, Font smallFont, Font normalUnderLineFont)  {
         chunkParagraph = new ArrayList<>();
 
         switch (i) {
@@ -407,9 +405,4 @@ public class Chunks {
 
         return chunkFooter;
     }
-
-
-
-
-
 }

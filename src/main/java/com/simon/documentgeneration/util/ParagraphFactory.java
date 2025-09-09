@@ -2,7 +2,6 @@ package com.simon.documentgeneration.util;
 
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.PdfPCell;
-import com.itextpdf.text.pdf.PdfPRow;
 import com.itextpdf.text.pdf.PdfPTable;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -28,20 +27,23 @@ public class ParagraphFactory {
     private PdfPTable tableForFretboard;
     private PdfPCell cellForFretboard;
 
-    public PdfPTable getFretboard(Chunk[] fretboard) throws DocumentException {
+    public PdfPTable getFretboard(Chunk[] fretboard, TablesWarehouse tables) throws DocumentException {
 
-        tableForFretboard = new PdfPTable(2);
-        tableForFretboard.setWidthPercentage(100);
-        tableForFretboard.setWidths(new int[]{40, 60});
-        tableForFretboard.getDefaultCell().setBorder(Rectangle.NO_BORDER);
+//        tableForFretboard = new PdfPTable(2);
+//        tableForFretboard.setWidthPercentage(100);
+//        tableForFretboard.setWidths(new int[]{40, 60});
+//        tableForFretboard.getDefaultCell().setBorder(Rectangle.NO_BORDER);
+//
+//        cellForFretboard = new PdfPCell(new Phrase(" "));
+//        cellForFretboard.setBorder(Rectangle.NO_BORDER);
+//        tableForFretboard.addCell(cellForFretboard);
+//
+//        cellForFretboard = new PdfPCell();
+//        cellForFretboard.setBorder(Rectangle.NO_BORDER);
+//        cellForFretboard.setHorizontalAlignment(Element.ALIGN_CENTER);
 
-        cellForFretboard = new PdfPCell(new Phrase(" "));
-        cellForFretboard.setBorder(Rectangle.NO_BORDER);
-        tableForFretboard.addCell(cellForFretboard);
+        tableForFretboard = tables.getTableForFretboard();
 
-        cellForFretboard = new PdfPCell();
-        cellForFretboard.setBorder(Rectangle.NO_BORDER);
-        cellForFretboard.setHorizontalAlignment(Element.ALIGN_CENTER);
         for (Chunk chunk : fretboard) {
             paragraph = new Paragraph();
             paragraph.add(chunk);
@@ -53,10 +55,10 @@ public class ParagraphFactory {
             } else {
                 paragraph.setIndentationLeft(95);
             }
-            cellForFretboard.addElement(paragraph);
+            tables.getCell().addElement(paragraph);
         }
 
-        tableForFretboard.addCell(cellForFretboard);
+        tableForFretboard.addCell(tables.getCell());
 
         return tableForFretboard;
     }
@@ -116,15 +118,15 @@ public class ParagraphFactory {
             }
 
             if (chunk.getContent().equals("UnderLineText1")) {
-                paragraphs.add(underLineText.getUnderLineText1(font.getNormalSmallFont()));
+                paragraphs.add(underLineText.getUnderLineText1(font.getSmallFont()));
                 continue;
             } else if (chunk.getContent().equals("UnderLineText2")) {
-                paragraphs.add(underLineText.getUnderLineText2(font.getNormalSmallFont()));
+                paragraphs.add(underLineText.getUnderLineText2(font.getSmallFont()));
                 continue;
             }
 
-
             paragraph.add(chunk);
+
             if (chunk.getContent().lastIndexOf("\n") != -1) {
                 paragraphs.add(paragraph);
 
@@ -137,7 +139,6 @@ public class ParagraphFactory {
 
             }
         }
-
         return paragraphs;
     }
 
@@ -152,6 +153,7 @@ public class ParagraphFactory {
             paragraph = new Paragraph(fretboard[i]);
             paragraph.setLeading(fretboard[i].getFont().getSize() * 1.2f);
             paragraph.setSpacingBefore(6);
+
             PdfPCell cell1 = new PdfPCell(paragraph);
             cell1.setBorder(Rectangle.NO_BORDER);
             cell1.setHorizontalAlignment(Element.ALIGN_LEFT);

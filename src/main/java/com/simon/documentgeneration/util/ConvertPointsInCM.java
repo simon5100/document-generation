@@ -7,8 +7,6 @@ import org.springframework.stereotype.Component;
 
 @Component
 @AllArgsConstructor
-@Getter
-@Setter
 public class ConvertPointsInCM {
 
     public float cm(float cm) {

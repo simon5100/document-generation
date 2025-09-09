@@ -22,43 +22,40 @@ public class DocumentGenerationServiceImpl implements DocumentGenerationService 
     private final Chunks chunks;
     private final HeaderNumberPage header;
     private final UnderLineTextWarehouse underLineText;
+    private final TablesWarehouse tables;
 
     @Override
-    public byte[] generatedDocument2() {
+    public byte[] generatedDocument() {
         try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
-            //создаем документ и настраиваем страницу
+            Chunk[] chunksFretboard =  chunks.getChunkFretboard(font);
+            Chunk chunkTitle = chunks.getChunkTitle(font);
+            Chunk[] chunksSection = chunks.getChunkSection(font);
+
+            PdfPTable tableFretboard = paragraphFactory.getFretboard(chunksFretboard, tables);
+            Paragraph title = paragraphFactory.getTitle(chunkTitle);
+
             Document document = new Document(PageSize.A4,
                     pointsInCM.cm(2.5F),
                     pointsInCM.cm(1F),
                     pointsInCM.cm(1F),
                     pointsInCM.cm(2F));
-            //делаем поток для записи
+
             PdfWriter writer = PdfWriter.getInstance(document, baos);
             writer.setPageEvent(header);
-            //открывем документ для записи
-
             document.open();
-
-            PdfPTable pdfPTable = paragraphFactory.getFretboard(
-                    chunks.getChunkFretboard(font.getNormalFont(), font.getNormalSmallFont())
-            );
-            document.add(pdfPTable);
-            Paragraph title = paragraphFactory.getTitle(
-                    chunks.getChunkTitle(font.getNormalBoldFont())
-            );
+            document.add(tableFretboard);
             document.add(title);
 
-            Chunk[] sections = chunks.getChunkSection(font.getNormalBoldFont());
-
-            for(int i = 0; i < sections.length; i++) {
-                Paragraph section = paragraphFactory.getSection(sections[i]);
+            for(int i = 0; i < chunksSection.length; i++) {
+                Paragraph section = paragraphFactory.getSection(chunksSection[i]);
                 document.add(section);
+
                 List<Paragraph> paragraphs = paragraphFactory.getDefaultParagraph(
                         chunks.getChunksParagraph(
                                 i,
                                 font.getNormalFont(),
                                 font.getNormalBoldFont(),
-                                font.getNormalSmallFont(),
+                                font.getSmallFont(),
                                 font.getNormalUNnderLineFont()
                         ),
                         pointsInCM.cm(1.25f),
@@ -72,11 +69,11 @@ public class DocumentGenerationServiceImpl implements DocumentGenerationService 
                 }
             }
 
-            pdfPTable = paragraphFactory.getFooterParagraph(
-                    chunks.getFooter(font.getNormalFont(), font.getNormalSmallFont(), font.getNormalUNnderLineFont())
+            PdfPTable tableFooter = paragraphFactory.getFooterParagraph(
+                    chunks.getFooter(font.getNormalFont(), font.getSmallFont(), font.getNormalUNnderLineFont())
             );
 
-            document.add(pdfPTable);
+            document.add(tableFooter);
 
             document.close();
             return baos.toByteArray();
