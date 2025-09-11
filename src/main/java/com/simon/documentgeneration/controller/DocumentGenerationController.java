@@ -1,12 +1,13 @@
 package com.simon.documentgeneration.controller;
 
+import com.simon.documentgeneration.dto.DocumentJobRegulationResponse;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @RequestMapping("/api/documents")
 public interface DocumentGenerationController {
 
-    @GetMapping("/v1/downland")
-    ResponseEntity<byte[]> downlandFile();
+    @PostMapping("/v1/generation/jobRegulation/secretarySession")
+    ResponseEntity<byte[]> downlandFile(DocumentJobRegulationResponse response);
 }

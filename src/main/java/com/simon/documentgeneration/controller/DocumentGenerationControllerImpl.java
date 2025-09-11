@@ -1,5 +1,6 @@
 package com.simon.documentgeneration.controller;
 
+import com.simon.documentgeneration.dto.DocumentJobRegulationResponse;
 import com.simon.documentgeneration.service.DocumentGenerationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.*;
@@ -13,7 +14,7 @@ public class DocumentGenerationControllerImpl implements DocumentGenerationContr
     private final DocumentGenerationService documentGenerationService;
 
     @Override
-    public ResponseEntity<byte[]> downlandFile() {
+    public ResponseEntity<byte[]> downlandFile(DocumentJobRegulationResponse response) {
 
         byte[] bytes = documentGenerationService.generatedDocument();
 
