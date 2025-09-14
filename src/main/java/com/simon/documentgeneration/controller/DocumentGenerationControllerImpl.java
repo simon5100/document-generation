@@ -1,6 +1,6 @@
 package com.simon.documentgeneration.controller;
 
-import com.simon.documentgeneration.dto.DocumentJobRegulationResponse;
+import com.simon.documentgeneration.dto.DocumentJobRegulationRequest;
 import com.simon.documentgeneration.service.DocumentGenerationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.*;
@@ -14,9 +14,9 @@ public class DocumentGenerationControllerImpl implements DocumentGenerationContr
     private final DocumentGenerationService documentGenerationService;
 
     @Override
-    public ResponseEntity<byte[]> downlandFile(DocumentJobRegulationResponse response) {
+    public ResponseEntity<byte[]> downlandFile(DocumentJobRegulationRequest request) {
 
-        byte[] bytes = documentGenerationService.generatedDocument();
+        byte[] bytes = documentGenerationService.generatedDocument(request);
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_PDF);

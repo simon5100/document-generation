@@ -35,4 +35,14 @@ public class TablesWarehouse {
 
         return table;
     }
+
+    public PdfPTable getTableFooter() throws DocumentException {
+
+        table = new PdfPTable(3);
+        table.setWidthPercentage(100);
+        table.setWidths(new int[]{55, 25, 35});
+        table.getDefaultCell().setBorder(Rectangle.NO_BORDER);
+
+        return table;
+    }
 }

@@ -3,6 +3,7 @@ package com.simon.documentgeneration.service;
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
+import com.simon.documentgeneration.dto.DocumentJobRegulationRequest;
 import com.simon.documentgeneration.util.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -23,16 +24,23 @@ public class DocumentGenerationServiceImpl implements DocumentGenerationService 
     private final HeaderNumberPage header;
     private final UnderLineTextWarehouse underLineText;
     private final TablesWarehouse tables;
+    private final Declension declension;
 
     @Override
-    public byte[] generatedDocument() {
+    public byte[] generatedDocument(DocumentJobRegulationRequest request) {
         try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
+            String wordGenitiveCase = declension.getGenitiveCase(request.getDistrictName());
+            int sectionNumber = request.getSectionNumber();
+
             Chunk[] chunksFretboard =  chunks.getChunkFretboard(font);
-            Chunk chunkTitle = chunks.getChunkTitle(font);
+            Chunk chunkTitle = chunks.getChunkTitle(font, wordGenitiveCase.toUpperCase());
             Chunk[] chunksSection = chunks.getChunkSection(font);
+            Chunk[] chunksFooter = chunks.getFooter(font, request);
 
             PdfPTable tableFretboard = paragraphFactory.getFretboard(chunksFretboard, tables);
             Paragraph title = paragraphFactory.getTitle(chunkTitle);
+            PdfPTable tableFooter = paragraphFactory.getFooterParagraph(chunksFooter, tables);
+
 
             Document document = new Document(PageSize.A4,
                     pointsInCM.cm(2.5F),
@@ -56,7 +64,9 @@ public class DocumentGenerationServiceImpl implements DocumentGenerationService 
                                 font.getNormalFont(),
                                 font.getNormalBoldFont(),
                                 font.getSmallFont(),
-                                font.getNormalUNnderLineFont()
+                                font.getNormalUNnderLineFont(),
+                                sectionNumber,
+                                wordGenitiveCase
                         ),
                         pointsInCM.cm(1.25f),
                         footnotes,
@@ -69,12 +79,7 @@ public class DocumentGenerationServiceImpl implements DocumentGenerationService 
                 }
             }
 
-            PdfPTable tableFooter = paragraphFactory.getFooterParagraph(
-                    chunks.getFooter(font.getNormalFont(), font.getSmallFont(), font.getNormalUNnderLineFont())
-            );
-
             document.add(tableFooter);
-
             document.close();
             return baos.toByteArray();
         } catch (Exception e) {

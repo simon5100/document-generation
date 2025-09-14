@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class DocumentJobRegulationResponse {
+public class DocumentJobRegulationRequest {
 
 
     String districtName;

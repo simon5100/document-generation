@@ -2,6 +2,7 @@ package com.simon.documentgeneration.util;
 
 import com.itextpdf.text.Chunk;
 import com.itextpdf.text.Font;
+import com.simon.documentgeneration.dto.DocumentJobRegulationRequest;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -40,13 +41,13 @@ public class Chunks {
         return chunkFretboard;
     }
 
-    public Chunk getChunkTitle(FontFactoryCustom font) {
-        return chunkTitle = new Chunk(
+    public Chunk getChunkTitle(FontFactoryCustom font, String districtName) {
+        return chunkTitle = new Chunk(String.format(
                 "ДОЛЖНОСТНОЙ РЕГЛАМЕНТ\n" +
                         "СЕКРЕТАРЯ СУДЕБНОГО ЗАСЕДАНИЯ АППАРАТА МИРОВЫХ СУДЕЙ\n" +
-                        "ЖЕЛЕЗНОДОРОЖНОГО СУДЕБНОГО РАЙОНА УПРАВЛЕНИЯ ПО\n" +
+                        "%s СУДЕБНОГО РАЙОНА УПРАВЛЕНИЯ ПО\n" +
                         "ОБЕСПЕЧЕНИЮ ДЕЯТЕЛЬНОСТИ МИРОВЫХ СУДЕЙ\n" +
-                        "НОВОСИБИРСКОЙ ОБЛАСТИ",
+                        "НОВОСИБИРСКОЙ ОБЛАСТИ", districtName),
                 font.getNormalBoldFont()
         );
     }
@@ -74,15 +75,16 @@ public class Chunks {
         return chunkSection;
     }
 
-    public List<Chunk> getChunksParagraph(int i, Font normalFont, Font boldFont, Font smallFont, Font normalUnderLineFont)  {
+    public List<Chunk> getChunksParagraph(int i, Font normalFont, Font boldFont, Font smallFont, Font normalUnderLineFont, int sectionNumber, String districtName)  {
         chunkParagraph = new ArrayList<>();
 
         switch (i) {
+            //Кейс с подстановкой текста
             case 0:
                 chunkParagraph.add(new Chunk("1. Должность государственной гражданской службы Новосибирской области " +
                         "(далее – гражданская служба): ", normalFont));
-                chunkParagraph.add(new Chunk("секретарь судебного заседания аппарата " +
-                        "мировых судей Железнодорожного судебного района ", boldFont));
+                chunkParagraph.add(new Chunk(String.format("секретарь судебного заседания аппарата " +
+                        "мировых судей %s судебного района ", districtName), boldFont));
                 chunkParagraph.add(new Chunk("(далее – секретарь " +
                         "судебного заседания) относится к старшей группе должностей гражданской " +
                         "службы категории «специалисты».\n", normalFont));
@@ -99,19 +101,19 @@ public class Chunks {
                 chunkParagraph.add(new Chunk(String.valueOf(countFootnote++), smallFont).
                         setTextRise(5));
                 chunkParagraph.add(new Chunk(": организационно – правовое обеспечение деятельности судов.\n", normalFont));
-                chunkParagraph.add(new Chunk("4. Назначение на должность и освобождение от должности секретаря " +
-                        "судебного заседания аппарата мировых судей Железнодорожного судебного района осуществляются " +
+                chunkParagraph.add(new Chunk(String.format("4. Назначение на должность и освобождение от должности секретаря " +
+                        "судебного заседания аппарата мировых судей %s судебного района осуществляются " +
                         "начальником управления по обеспечению деятельности мировых судей Новосибирской области с учетом " +
-                        "требований Закона Новосибирской области от 26.09.2005 № 314-ОЗ «О мировых судьях Новосибирской области».\n"
+                        "требований Закона Новосибирской области от 26.09.2005 № 314-ОЗ «О мировых судьях Новосибирской области».\n", districtName)
                         , normalFont));
                 chunkParagraph.add(new Chunk("5. Секретарь судебного заседания непосредственно подчиняется", normalFont));
-                chunkParagraph.add(new Chunk(" мировому судье 4-го судебного участка Железнодорожного судебного района", boldFont));
+                chunkParagraph.add(new Chunk(String.format(" мировому судье %d-го судебного участка %s судебного района", sectionNumber, districtName), boldFont));
                 chunkParagraph.add(new Chunk(" (далее – мировой судья).\n", normalFont));
                 chunkParagraph.add(new Chunk("FootnotePage1"));
                 chunkParagraph.add(new Chunk("6. Секретарь судебного заседания обязан исполнять должностные обязанности:\n", normalFont));
-                chunkParagraph.add(new Chunk("секретаря судебного участка аппарата мировых судей Железнодорожного судебного " +
-                        "района г. Новосибирска, осуществляющего свою профессиональную деятельность на  4-м судебном участке " +
-                        "Железнодорожного судебного района г. Новосибирска, в период его временного отсутствия.\n", normalFont));
+                chunkParagraph.add(new Chunk(String.format("секретаря судебного участка аппарата мировых судей %1$s судебного " +
+                        "района г. Новосибирска, осуществляющего свою профессиональную деятельность на  %2$d-м судебном участке " +
+                        "%1$s судебного района г. Новосибирска, в период его временного отсутствия.\n", districtName, sectionNumber), normalFont));
                 break;
             case 1:
                 chunkParagraph.add(new Chunk("7. Для замещения должности секретаря судебного заседания устанавливаются следующие квалификационные требования:\n", normalFont));
@@ -222,11 +224,12 @@ public class Chunks {
                 chunkParagraph.add(new Chunk("\n", normalFont));
                 break;
             case 2:
+                //Кейс с подстановкой текста
                 chunkParagraph.add(new Chunk("8. Основные права и обязанности секретаря судебного заседания, а также ограничения, запреты и требования к служебному поведению, установленные " +
                         "статьями 15–18, 20, 20.1, 20.2, 20.3 Федерального закона от 27.07.2004 № 79-ФЗ «О государственной гражданской службе Российской Федерации».\n", normalFont));
-                chunkParagraph.add(new Chunk("9. В целях реализации задач и функций, возложенных на аппарат мировых судей Железнодорожного судебного района, секретарь судебного заседания обязан " +
-                        "с применением специализированных программных комплексов, используемых в работе аппарата мировых судей, осуществлять профессиональную деятельность на 4 судебном участке ]" +
-                        "Железнодорожного судебного района г. Новосибирска:\n", normalFont));
+                chunkParagraph.add(new Chunk(String.format("9. В целях реализации задач и функций, возложенных на аппарат мировых судей %2$s судебного района, секретарь судебного заседания обязан " +
+                        "с применением специализированных программных комплексов, используемых в работе аппарата мировых судей, осуществлять профессиональную деятельность на %1$d судебном участке " +
+                        "%2$s судебного района г. Новосибирска:\n",sectionNumber, districtName), normalFont));
                 chunkParagraph.add(new Chunk("1) Не реже одного раза в неделю подготавливать и вывешивать в установленном месте списки дел, назначенных к рассмотрению в судебном заседании, в течение 1 рабочего дня размещать их на официальном сайте мирового судьи.\n", normalFont));
                 chunkParagraph.add(new Chunk("2) В соответствии с Федеральным законом от 22.12.2008 № 262-ФЗ «Об обеспечении доступа к информации о деятельности судов в Российской Федерации» в срок, " +
                         "не превышающий 2-х рабочих дней, с использованием выгрузки из ПИ «АМИРС» размещать, обновлять и поддерживать в актуальном состоянии на официальном сайте мирового судьи информацию " +
@@ -265,9 +268,9 @@ public class Chunks {
                 chunkParagraph.add(new Chunk("20) Информировать мирового судью судебного участка, на котором осуществляет свою профессиональную деятельность, и/или мирового судью-организатора " +
                         "судебного района, и/или начальника управления о выявленных при исполнении служебных обязанностей нарушениях действующего законодательства, возникающих проблемах и недостатках, " +
                         "предлагать способы их устранения.\n", normalFont));
-                chunkParagraph.add(new Chunk("21) По письменному распоряжению мирового судьи-организатора и/или начальника управления, по согласованию с мировым судьей соответствующего судебного " +
+                chunkParagraph.add(new Chunk(String.format("21) По письменному распоряжению мирового судьи-организатора и/или начальника управления, по согласованию с мировым судьей соответствующего судебного " +
                         "участка, исполнять должностные обязанности временно отсутствующего секретаря судебного заседания и/или секретаря судебного участка и/или специалиста 1 разряда аппарата мировых " +
-                        "судей Железнодорожного судебного района.\n", normalFont));
+                        "судей %s судебного района.\n", districtName), normalFont));
                 chunkParagraph.add(new Chunk("22) По письменному поручению мирового судьи и/или мирового судьи-организатора и/или начальника управления осуществлять иные действия по выполнению " +
                         "задач и функций, возложенных на аппарат мирового судьи и управления.\n", normalFont));
                 chunkParagraph.add(new Chunk("23) При переводе на другую должность или расторжении служебного контракта, а также в последний рабочий день перед длительным отсутствием " +
@@ -357,51 +360,45 @@ public class Chunks {
         return chunkParagraph;
     }
 
-    public Chunk[] getFooter (Font normalFont, Font fontInterlinear, Font fontNormaLinear) {
+    public Chunk[] getFooter (FontFactoryCustom font, DocumentJobRegulationRequest request) {
 
-        chunkFooter = new Chunk[33];
+        Font normalFont = font.getNormalFont();
+        Font fontInterlinear = font.getSmallFont();
+        Font fontNormaLinear = font.getNormalUNnderLineFont();
 
-        chunkFooter[0] = new Chunk("Мировой судья 4-го судебного участка " +
-                "Железнодорожного судебного района " +
-                "г. Новосибирска", normalFont);
-        chunkFooter[1] = new Chunk("_____________", normalFont);
-        chunkFooter[2] = new Chunk("Д.А. Грановская", fontNormaLinear);
-        chunkFooter[3] = new Chunk("(должность непосредственного руководителя гражданского служащего)", fontInterlinear);
-        chunkFooter[4] = new Chunk("(подпись)", fontInterlinear);
-        chunkFooter[5] = new Chunk("(инициалы, фамилия)", fontInterlinear);
-        chunkFooter[6] = new Chunk("\nСОГЛАСОВАНО:\n" +
+        chunkFooter = new Chunk[16];
+
+        chunkFooter[0] = new Chunk(String.format("Мировой судья %d-го судебного участка " +
+                "%s судебного района " +
+                "г. Новосибирска", request.getSectionNumber(), request.getDistrictName()), normalFont);
+        chunkFooter[1] = new Chunk("(должность непосредственного руководителя гражданского служащего)", fontInterlinear);
+        chunkFooter[2] = new Chunk("\nСОГЛАСОВАНО:\n" +
                 "Мировой судья-организатор " +
                 "Железнодорожного судебного района " +
                 "г. Новосибирска                                    ", normalFont);
-        chunkFooter[7] = new Chunk("_____________");
-        chunkFooter[8] = new Chunk("О.А. Петраш", fontNormaLinear);
-        chunkFooter[9] = new Chunk("(должность непосредственного руководителя гражданского служащего)", fontInterlinear);
-        chunkFooter[10] = new Chunk("(подпись)", fontInterlinear);
-        chunkFooter[11] = new Chunk("(инициалы, фамилия)", fontInterlinear);
-        chunkFooter[12] = new Chunk("\nСОГЛАСОВАНО:\n" +
+        chunkFooter[3] = new Chunk("(должность непосредственного руководителя гражданского служащего)", fontInterlinear);
+        chunkFooter[4] = new Chunk("\nСОГЛАСОВАНО:\n" +
                 "Начальник отдела правового обеспечения " +
                 "управления по обеспечению деятельности " +
                 "мировых судей Новосибирской области", normalFont);
-        chunkFooter[13] = new Chunk("_____________");
-        chunkFooter[14] = new Chunk("Н.В. Жукова", fontNormaLinear);
+        chunkFooter[5] = new Chunk("С должностным регламентом ознакомлен:", normalFont);
+        chunkFooter[6] = new Chunk("(должность гражданского служащего)", fontInterlinear);
+        chunkFooter[7] = new Chunk("«____» ___________ 20___ г.", normalFont);
+
+        chunkFooter[8] = new Chunk("(подпись)", fontInterlinear);
+
+        chunkFooter[9] = new Chunk("Д.А. Грановская", fontNormaLinear);
+        chunkFooter[10] = new Chunk("О.А. Петраш", fontNormaLinear);
+        chunkFooter[11] = new Chunk("Н.В. Жукова", fontNormaLinear);
+
+
+        chunkFooter[12] = new Chunk("(инициалы, фамилия)", fontInterlinear);
+
+
+        chunkFooter[13] = new Chunk("_____________", normalFont);
+        chunkFooter[14] = new Chunk("__________________________", normalFont);
         chunkFooter[15] = new Chunk(" ");
-        chunkFooter[16] = new Chunk("(подпись)", fontInterlinear);
-        chunkFooter[17] = new Chunk("(инициалы, фамилия)", fontInterlinear);
-        chunkFooter[18] = new Chunk("«____» ___________ 20___ г.", normalFont);
-        chunkFooter[19] = new Chunk(" ");
-        chunkFooter[20] = new Chunk(" ");
-        chunkFooter[21] = new Chunk("С должностным регламентом ознакомлен:", normalFont);
-        chunkFooter[22] = new Chunk(" ");
-        chunkFooter[23] = new Chunk(" ");
-        chunkFooter[24] = new Chunk("__________________________", normalFont);
-        chunkFooter[25] = new Chunk("_____________", normalFont);
-        chunkFooter[26] = new Chunk("_____________", normalFont);
-        chunkFooter[27] = new Chunk("(должность гражданского служащего)", fontInterlinear);
-        chunkFooter[28] = new Chunk("(подпись)", fontInterlinear);
-        chunkFooter[29] = new Chunk("(инициалы, фамилия)", fontInterlinear);
-        chunkFooter[30] = new Chunk("«____» ___________ 20___ г.", normalFont);
-        chunkFooter[31] = new Chunk(" ");
-        chunkFooter[32] = new Chunk(" ");
+
 
         return chunkFooter;
     }

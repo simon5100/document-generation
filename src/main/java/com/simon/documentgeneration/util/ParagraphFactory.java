@@ -25,22 +25,9 @@ public class ParagraphFactory {
     private Paragraph lineFootnote;
     private List<Paragraph> paragraphs;
     private PdfPTable tableForFretboard;
-    private PdfPCell cellForFretboard;
+    private PdfPTable tableForFooter;
 
     public PdfPTable getFretboard(Chunk[] fretboard, TablesWarehouse tables) throws DocumentException {
-
-//        tableForFretboard = new PdfPTable(2);
-//        tableForFretboard.setWidthPercentage(100);
-//        tableForFretboard.setWidths(new int[]{40, 60});
-//        tableForFretboard.getDefaultCell().setBorder(Rectangle.NO_BORDER);
-//
-//        cellForFretboard = new PdfPCell(new Phrase(" "));
-//        cellForFretboard.setBorder(Rectangle.NO_BORDER);
-//        tableForFretboard.addCell(cellForFretboard);
-//
-//        cellForFretboard = new PdfPCell();
-//        cellForFretboard.setBorder(Rectangle.NO_BORDER);
-//        cellForFretboard.setHorizontalAlignment(Element.ALIGN_CENTER);
 
         tableForFretboard = tables.getTableForFretboard();
 
@@ -142,30 +129,43 @@ public class ParagraphFactory {
         return paragraphs;
     }
 
-    public PdfPTable getFooterParagraph(Chunk[] fretboard) throws DocumentException {
+    public PdfPTable getFooterParagraph(Chunk[] footer, TablesWarehouse tableFooter) throws DocumentException {
 
-        tableForFretboard = new PdfPTable(3);
-        tableForFretboard.setWidthPercentage(100);
-        tableForFretboard.setWidths(new int[]{55, 25, 35});
-        tableForFretboard.getDefaultCell().setBorder(Rectangle.NO_BORDER);
+        tableForFooter = tableFooter.getTableFooter();
 
-        for (int i = 0; i < fretboard.length; i+=3) {
-            paragraph = new Paragraph(fretboard[i]);
-            paragraph.setLeading(fretboard[i].getFont().getSize() * 1.2f);
+        Paragraph paragraph1 = new Paragraph();
+
+
+        Paragraph paragraph2 = new Paragraph();
+
+
+        Paragraph paragraph3 = new Paragraph();
+
+
+        PdfPCell cell1 = new PdfPCell();
+        PdfPCell cell2 = new PdfPCell();
+        PdfPCell cell3 = new PdfPCell();
+
+
+
+
+        for (int i = 0; i < footer.length; i+=3) {
+            paragraph = new Paragraph(footer[i]);
+            paragraph.setLeading(footer[i].getFont().getSize() * 1.2f);
             paragraph.setSpacingBefore(6);
 
-            PdfPCell cell1 = new PdfPCell(paragraph);
+//            PdfPCell cell1 = new PdfPCell(paragraph);
             cell1.setBorder(Rectangle.NO_BORDER);
             cell1.setHorizontalAlignment(Element.ALIGN_LEFT);
 
-            paragraph = new Paragraph(fretboard[i+1]);
-            PdfPCell cell2 = new PdfPCell(paragraph);
+            paragraph = new Paragraph(footer[i+1]);
+//            PdfPCell cell2 = new PdfPCell(paragraph);
             cell2.setBorder(Rectangle.NO_BORDER);
             cell2.setHorizontalAlignment(Element.ALIGN_CENTER);
             cell2.setVerticalAlignment(Element.ALIGN_BOTTOM);
 
-            paragraph = new Paragraph(fretboard[i+2]);
-            PdfPCell cell3 = new PdfPCell(paragraph);
+            paragraph = new Paragraph(footer[i+2]);
+//            PdfPCell cell3 = new PdfPCell(paragraph);
             cell3.setBorder(Rectangle.NO_BORDER);
             cell3.setHorizontalAlignment(Element.ALIGN_RIGHT);
             cell3.setVerticalAlignment(Element.ALIGN_BOTTOM);
