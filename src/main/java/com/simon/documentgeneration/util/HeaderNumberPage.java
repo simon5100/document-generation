@@ -27,6 +27,7 @@ public class HeaderNumberPage extends PdfPageEventHelper {
 
     @Override
     public void onEndPage(PdfWriter writer, Document document) {
+
         if (numberPage != 1) {
             cb = writer.getDirectContent();
 

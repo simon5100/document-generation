@@ -81,9 +81,10 @@ public class DocumentGenerationServiceImpl implements DocumentGenerationService 
 
             document.add(tableFooter);
             document.close();
+            log.info(baos.toByteArray().length);
             return baos.toByteArray();
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Непредвиденная ошибка");
         }
     }
 }

@@ -371,34 +371,40 @@ public class Chunks {
         chunkFooter[0] = new Chunk(String.format("Мировой судья %d-го судебного участка " +
                 "%s судебного района " +
                 "г. Новосибирска", request.getSectionNumber(), request.getDistrictName()), normalFont);
+
         chunkFooter[1] = new Chunk("(должность непосредственного руководителя гражданского служащего)", fontInterlinear);
-        chunkFooter[2] = new Chunk("\nСОГЛАСОВАНО:\n" +
+
+        chunkFooter[2] = new Chunk(String.format("%s", request.getJudgeName()), fontNormaLinear);
+
+        chunkFooter[3] = new Chunk("\nСОГЛАСОВАНО:\n" +
                 "Мировой судья-организатор " +
                 "Железнодорожного судебного района " +
                 "г. Новосибирска                                    ", normalFont);
-        chunkFooter[3] = new Chunk("(должность непосредственного руководителя гражданского служащего)", fontInterlinear);
-        chunkFooter[4] = new Chunk("\nСОГЛАСОВАНО:\n" +
+
+
+        chunkFooter[4] = new Chunk("_____________", normalFont);
+
+        chunkFooter[5] = new Chunk(String.format("%s", request.getJudgeOrganizerName()), fontNormaLinear);
+
+        chunkFooter[6] = new Chunk("\nСОГЛАСОВАНО:\n" +
                 "Начальник отдела правового обеспечения " +
                 "управления по обеспечению деятельности " +
                 "мировых судей Новосибирской области", normalFont);
-        chunkFooter[5] = new Chunk("С должностным регламентом ознакомлен:", normalFont);
-        chunkFooter[6] = new Chunk("(должность гражданского служащего)", fontInterlinear);
-        chunkFooter[7] = new Chunk("«____» ___________ 20___ г.", normalFont);
 
-        chunkFooter[8] = new Chunk("(подпись)", fontInterlinear);
+        chunkFooter[7] = new Chunk("(подпись)", fontInterlinear);
 
-        chunkFooter[9] = new Chunk("Д.А. Грановская", fontNormaLinear);
-        chunkFooter[10] = new Chunk("О.А. Петраш", fontNormaLinear);
-        chunkFooter[11] = new Chunk("Н.В. Жукова", fontNormaLinear);
+        chunkFooter[8] = new Chunk(String.format("%s", request.getConcordantName()), fontNormaLinear);
+
+        chunkFooter[9] = new Chunk("(инициалы, фамилия)", fontInterlinear);
 
 
-        chunkFooter[12] = new Chunk("(инициалы, фамилия)", fontInterlinear);
+
+        chunkFooter[10] = new Chunk("«____» ___________ 20___ г.", normalFont);
 
 
-        chunkFooter[13] = new Chunk("_____________", normalFont);
-        chunkFooter[14] = new Chunk("__________________________", normalFont);
-        chunkFooter[15] = new Chunk(" ");
-
+        chunkFooter[11] = new Chunk("С должностным регламентом ознакомлен:", normalFont);
+        chunkFooter[12] = new Chunk("(должность гражданского служащего)", fontInterlinear);
+        chunkFooter[13] = new Chunk("Секретарь судебного заседания", fontNormaLinear);
 
         return chunkFooter;
     }

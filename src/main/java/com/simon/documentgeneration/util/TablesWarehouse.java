@@ -15,7 +15,6 @@ import org.springframework.stereotype.Component;
 public class TablesWarehouse {
 
     private PdfPTable table;
-
     private PdfPCell cell;
 
     public PdfPTable getTableForFretboard() throws DocumentException {

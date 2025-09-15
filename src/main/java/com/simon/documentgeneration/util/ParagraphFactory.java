@@ -46,6 +46,7 @@ public class ParagraphFactory {
         }
 
         tableForFretboard.addCell(tables.getCell());
+        tableForFretboard.setSpacingAfter(15);
 
         return tableForFretboard;
     }
@@ -133,48 +134,189 @@ public class ParagraphFactory {
 
         tableForFooter = tableFooter.getTableFooter();
 
-        Paragraph paragraph1 = new Paragraph();
+        PdfPCell cell;
 
+        for (int i = 0; i < 33; i++) {
 
-        Paragraph paragraph2 = new Paragraph();
+            cell = new PdfPCell();
+            cell.setBorder(Rectangle.NO_BORDER);
 
+            switch (i) {
 
-        Paragraph paragraph3 = new Paragraph();
+                case 0:
+                    //мировой судья ...
+                    paragraph = new Paragraph(footer[0]);
+                    paragraph.setLeading(footer[0].getFont().getSize() * 1.2f);
+                    paragraph.setSpacingBefore(6);
+                    paragraph.setAlignment(Element.ALIGN_LEFT);
+                    cell.addElement(paragraph);
+                    cell.setVerticalAlignment(Element.ALIGN_BOTTOM);
 
+                    break;
+                case 2:
+                    //ФИО мирового судьи
+                    paragraph = new Paragraph(footer[2]);
+                    paragraph.setLeading(footer[2].getFont().getSize() * 1.2f);
+                    paragraph.setSpacingBefore(6);
+                    paragraph.setAlignment(Element.ALIGN_RIGHT);
+                    cell.addElement(paragraph);
+                    cell.setVerticalAlignment(Element.ALIGN_BOTTOM);
+                    break;
+                case 6:
+                    //мировой судья организатор...
+                    paragraph = new Paragraph(footer[3]);
+                    paragraph.setLeading(footer[3].getFont().getSize() * 1.2f);
+                    paragraph.setSpacingBefore(6);
+                    paragraph.setAlignment(Element.ALIGN_LEFT);
+                    cell.addElement(paragraph);
+                    cell.setVerticalAlignment(Element.ALIGN_BOTTOM);
+                    cell.setHorizontalAlignment(Element.ALIGN_LEFT);
 
-        PdfPCell cell1 = new PdfPCell();
-        PdfPCell cell2 = new PdfPCell();
-        PdfPCell cell3 = new PdfPCell();
+                    break;
+                case 8:
+                    //ФИО мирового судьи организатора
+                    paragraph = new Paragraph(footer[5]);
+                    paragraph.setLeading(footer[5].getFont().getSize() * 1.2f);
+                    paragraph.setSpacingBefore(6);
+                    paragraph.setAlignment(Element.ALIGN_RIGHT);
+                    cell.addElement(paragraph);
+                    cell.setVerticalAlignment(Element.ALIGN_BOTTOM);
 
+                    break;
+                case 12:
+                    //Начальник отдела правового...
+                    paragraph = new Paragraph(footer[6]);
+                    paragraph.setLeading(footer[6].getFont().getSize() * 1.2f);
+                    paragraph.setSpacingBefore(6);
+                    paragraph.setAlignment(Element.ALIGN_LEFT);
+                    cell.addElement(paragraph);
+                    cell.setVerticalAlignment(Element.ALIGN_BOTTOM);
 
+                    break;
+                case 14:
+                    //ФИО Начальник отдела правового
+                    paragraph = new Paragraph(footer[8]);
+                    paragraph.setLeading(footer[8].getFont().getSize() * 1.2f);
+                    paragraph.setSpacingBefore(6);
+                    paragraph.setAlignment(Element.ALIGN_RIGHT);
+                    cell.addElement(paragraph);
+                    cell.setVerticalAlignment(Element.ALIGN_BOTTOM);
+                    break;
 
+                case 1:
+                case 7:
+                case 13:
+                case 25:
+                    //подчеркивание
+                    paragraph = new Paragraph(footer[4]);
+                    paragraph.setLeading(footer[4].getFont().getSize() * 1.2f);
+                    paragraph.setSpacingBefore(6);
+                    paragraph.setAlignment(Element.ALIGN_CENTER);
+                    cell.addElement(paragraph);
+                    cell.setVerticalAlignment(Element.ALIGN_BOTTOM);
+                    break;
 
-        for (int i = 0; i < footer.length; i+=3) {
-            paragraph = new Paragraph(footer[i]);
-            paragraph.setLeading(footer[i].getFont().getSize() * 1.2f);
-            paragraph.setSpacingBefore(6);
+                case 26:
+                    //подчеркивание
+                    paragraph = new Paragraph(footer[4]);
+                    paragraph.setLeading(footer[4].getFont().getSize() * 1.2f);
+                    paragraph.setSpacingBefore(6);
+                    paragraph.setAlignment(Element.ALIGN_RIGHT);
+                    cell.addElement(paragraph);
+                    cell.setVerticalAlignment(Element.ALIGN_BOTTOM);
+                    break;
 
-//            PdfPCell cell1 = new PdfPCell(paragraph);
-            cell1.setBorder(Rectangle.NO_BORDER);
-            cell1.setHorizontalAlignment(Element.ALIGN_LEFT);
+                case 4:
+                case 10:
+                case 16:
+                case 28:
+                    //"(подпись)"
+                    paragraph = new Paragraph(footer[7]);
+                    paragraph.setLeading(footer[7].getFont().getSize() * 1.2f);
+                    paragraph.setSpacingBefore(6);
+                    paragraph.setAlignment(Element.ALIGN_CENTER);
+                    cell.addElement(paragraph);
+                    cell.setVerticalAlignment(Element.ALIGN_TOP);
+                    break;
 
-            paragraph = new Paragraph(footer[i+1]);
-//            PdfPCell cell2 = new PdfPCell(paragraph);
-            cell2.setBorder(Rectangle.NO_BORDER);
-            cell2.setHorizontalAlignment(Element.ALIGN_CENTER);
-            cell2.setVerticalAlignment(Element.ALIGN_BOTTOM);
+                case 5:
+                case 11:
+                case 17:
+                case 29:
+                    //"(инициалы, фамилия)"
+                    paragraph = new Paragraph(footer[9]);
+                    paragraph.setLeading(footer[9].getFont().getSize() * 1.2f);
+                    paragraph.setSpacingBefore(6);
+                    paragraph.setAlignment(Element.ALIGN_RIGHT);
+                    cell.setVerticalAlignment(Element.ALIGN_TOP);
+                    cell.addElement(paragraph);
+                    break;
 
-            paragraph = new Paragraph(footer[i+2]);
-//            PdfPCell cell3 = new PdfPCell(paragraph);
-            cell3.setBorder(Rectangle.NO_BORDER);
-            cell3.setHorizontalAlignment(Element.ALIGN_RIGHT);
-            cell3.setVerticalAlignment(Element.ALIGN_BOTTOM);
+                case 3:
+                case 9:
+                    //"(должность непосредственного руководителя гражданского служащего)"
+                    paragraph = new Paragraph(footer[1]);
+                    paragraph.setLeading(footer[1].getFont().getSize() * 1.2f);
+                    paragraph.setSpacingBefore(6);
+                    paragraph.setAlignment(Element.ALIGN_LEFT);
+                    cell.addElement(paragraph);
+                    cell.setVerticalAlignment(Element.ALIGN_TOP);
 
-            tableForFretboard.addCell(cell1);
-            tableForFretboard.addCell(cell2);
-            tableForFretboard.addCell(cell3);
+                    break;
 
+                case 15:
+                case 19:
+                case 20:
+                case 22:
+                case 23:
+                case 31:
+                case 32:
+                    //пустые ячейки
+                    break;
+
+                case 21:
+                    //С должностным регламентом ознакомлен:
+                    paragraph = new Paragraph(footer[11]);
+                    paragraph.setLeading(footer[11].getFont().getSize() * 1.2f);
+                    paragraph.setSpacingBefore(6);
+                    paragraph.setAlignment(Element.ALIGN_LEFT);
+                    cell.addElement(paragraph);
+
+                    break;
+                case 24:
+                    paragraph = new Paragraph(footer[13]);
+                    paragraph.setLeading(footer[13].getFont().getSize() * 1.2f);
+                    paragraph.setSpacingBefore(6);
+                    paragraph.setAlignment(Element.ALIGN_LEFT);
+                    cell.addElement(paragraph);
+
+                    break;
+                case 27:
+                    //"(должность гражданского служащего)"
+                    paragraph = new Paragraph(footer[12]);
+                    paragraph.setLeading(footer[12].getFont().getSize() * 1.2f);
+                    paragraph.setSpacingBefore(6);
+                    paragraph.setAlignment(Element.ALIGN_LEFT);
+                    cell.addElement(paragraph);
+                    break;
+
+                case 18:
+                case 30:
+                    paragraph = new Paragraph(footer[10]);
+                    paragraph.setLeading(footer[10].getFont().getSize() * 1.2f);
+                    paragraph.setSpacingBefore(6);
+                    paragraph.setAlignment(Element.ALIGN_LEFT);
+                    cell.addElement(paragraph);
+
+                    break;
+
+                default:
+                    throw new RuntimeException("что то случилось");
+            }
+
+            tableForFooter.addCell(cell);
         }
-        return tableForFretboard;
+
+        return tableForFooter;
     }
 }

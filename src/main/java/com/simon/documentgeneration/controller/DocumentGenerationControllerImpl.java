@@ -6,7 +6,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.RestController;
 
-
 @RestController
 @RequiredArgsConstructor
 public class DocumentGenerationControllerImpl implements DocumentGenerationController {
@@ -22,7 +21,7 @@ public class DocumentGenerationControllerImpl implements DocumentGenerationContr
         headers.setContentType(MediaType.APPLICATION_PDF);
         headers.setContentDisposition(
                 ContentDisposition.inline()
-                .filename("document.pdf")
+                .filename("Dolznostnoi reglament CCZ .pdf")
                 .build());
         headers.setContentLength(bytes.length);
 
