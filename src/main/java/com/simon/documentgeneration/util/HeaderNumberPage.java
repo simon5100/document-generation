@@ -8,12 +8,14 @@ import com.itextpdf.text.pdf.PdfPageEventHelper;
 import com.itextpdf.text.pdf.PdfWriter;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.stereotype.Component;
 import java.awt.*;
 
 @Component
 @AllArgsConstructor
 @NoArgsConstructor
+@Setter
 public class HeaderNumberPage extends PdfPageEventHelper {
 
     private  int numberPage = 1;
