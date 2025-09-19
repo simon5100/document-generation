@@ -9,8 +9,6 @@ import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
-@AllArgsConstructor
-@NoArgsConstructor
 @Getter
 public class TablesWarehouse {
 

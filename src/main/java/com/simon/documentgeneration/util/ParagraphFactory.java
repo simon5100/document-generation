@@ -14,8 +14,6 @@ import java.util.List;
 
 @Log4j2
 @Component
-@AllArgsConstructor
-@NoArgsConstructor
 @Getter
 @Setter
 public class ParagraphFactory {
@@ -80,7 +78,6 @@ public class ParagraphFactory {
         lineFootnote.setSpacingAfter(6);
         lineFootnote.setSpacingBefore(6);
 
-
         paragraph = new Paragraph();
         paragraph.setAlignment(Element.ALIGN_JUSTIFIED);
         paragraph.setFirstLineIndent(indentCM);
@@ -90,27 +87,25 @@ public class ParagraphFactory {
 
         for (Chunk chunk : chunks) {
 
-            if (chunk.getContent().equals("FootnotePage1")) {
-                paragraphs.add(lineFootnote);
-                paragraphs.add(footnotes.getFootnotePage1(font));
-                continue;
-            } else if (chunk.getContent().equals("FootnotePage2")){
-                lineFootnote.setSpacingBefore(20);
-                paragraphs.add(lineFootnote);
-                paragraphs.add(footnotes.getFootnotePage2(font));
-                continue;
-            } else if (chunk.getContent().equals("FootnotePage10")) {
-                paragraphs.add(lineFootnote);
-                paragraphs.add(footnotes.getFootnotePage10(font));
-                continue;
-            }
-
-            if (chunk.getContent().equals("UnderLineText1")) {
-                paragraphs.add(underLineText.getUnderLineText1(font.getSmallFont()));
-                continue;
-            } else if (chunk.getContent().equals("UnderLineText2")) {
-                paragraphs.add(underLineText.getUnderLineText2(font.getSmallFont()));
-                continue;
+            switch (chunk.getContent()) {
+                case "FootnotePage1":
+                    paragraphs.add(lineFootnote);
+                    paragraphs.add(footnotes.getFOOTNOTES_PAGE_1());
+                    continue;
+                case "FootnotePage2":
+                    lineFootnote.setSpacingBefore(20);
+                    paragraphs.add(lineFootnote);
+                    paragraphs.add(footnotes.getFOOTNOTES_PAGE_2());
+                    continue;
+                case "FootnotePage10":
+                    paragraphs.add(lineFootnote);
+                    paragraphs.add(footnotes.getFOOTNOTES_PAGE_10());
+                case "UnderLineText1":
+                    paragraphs.add(underLineText.getUNDER_LINE_TEXT1());
+                    continue;
+                case "UnderLineText2":
+                    paragraphs.add(underLineText.getUNDER_LINE_TEXT2());
+                    continue;
             }
 
             paragraph.add(chunk);
@@ -151,8 +146,8 @@ public class ParagraphFactory {
                     paragraph.setAlignment(Element.ALIGN_LEFT);
                     cell.addElement(paragraph);
                     cell.setVerticalAlignment(Element.ALIGN_BOTTOM);
-
                     break;
+
                 case 2:
                     //ФИО мирового судьи
                     paragraph = new Paragraph(footer[2]);
@@ -162,6 +157,7 @@ public class ParagraphFactory {
                     cell.addElement(paragraph);
                     cell.setVerticalAlignment(Element.ALIGN_BOTTOM);
                     break;
+
                 case 6:
                     //мировой судья организатор...
                     paragraph = new Paragraph(footer[3]);
@@ -171,8 +167,8 @@ public class ParagraphFactory {
                     cell.addElement(paragraph);
                     cell.setVerticalAlignment(Element.ALIGN_BOTTOM);
                     cell.setHorizontalAlignment(Element.ALIGN_LEFT);
-
                     break;
+
                 case 8:
                     //ФИО мирового судьи организатора
                     paragraph = new Paragraph(footer[5]);
@@ -181,8 +177,8 @@ public class ParagraphFactory {
                     paragraph.setAlignment(Element.ALIGN_RIGHT);
                     cell.addElement(paragraph);
                     cell.setVerticalAlignment(Element.ALIGN_BOTTOM);
-
                     break;
+
                 case 12:
                     //Начальник отдела правового...
                     paragraph = new Paragraph(footer[6]);
@@ -191,8 +187,8 @@ public class ParagraphFactory {
                     paragraph.setAlignment(Element.ALIGN_LEFT);
                     cell.addElement(paragraph);
                     cell.setVerticalAlignment(Element.ALIGN_BOTTOM);
-
                     break;
+
                 case 14:
                     //ФИО Начальник отдела правового
                     paragraph = new Paragraph(footer[8]);
@@ -261,7 +257,6 @@ public class ParagraphFactory {
                     paragraph.setAlignment(Element.ALIGN_LEFT);
                     cell.addElement(paragraph);
                     cell.setVerticalAlignment(Element.ALIGN_TOP);
-
                     break;
 
                 case 15:
@@ -281,16 +276,16 @@ public class ParagraphFactory {
                     paragraph.setSpacingBefore(6);
                     paragraph.setAlignment(Element.ALIGN_LEFT);
                     cell.addElement(paragraph);
-
                     break;
+
                 case 24:
                     paragraph = new Paragraph(footer[13]);
                     paragraph.setLeading(footer[13].getFont().getSize() * 1.2f);
                     paragraph.setSpacingBefore(6);
                     paragraph.setAlignment(Element.ALIGN_LEFT);
                     cell.addElement(paragraph);
-
                     break;
+
                 case 27:
                     //"(должность гражданского служащего)"
                     paragraph = new Paragraph(footer[12]);
@@ -307,11 +302,10 @@ public class ParagraphFactory {
                     paragraph.setSpacingBefore(6);
                     paragraph.setAlignment(Element.ALIGN_LEFT);
                     cell.addElement(paragraph);
-
                     break;
 
                 default:
-                    throw new RuntimeException("что то случилось");
+                    throw new RuntimeException("В таблице нет ячейки под номером: " + i);
             }
 
             tableForFooter.addCell(cell);

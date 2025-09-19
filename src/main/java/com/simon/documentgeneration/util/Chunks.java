@@ -10,8 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-@AllArgsConstructor
-@NoArgsConstructor
 public class Chunks {
 
     private Chunk[] chunkFretboard;

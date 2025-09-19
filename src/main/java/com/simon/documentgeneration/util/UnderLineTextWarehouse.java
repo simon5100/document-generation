@@ -1,44 +1,33 @@
 package com.simon.documentgeneration.util;
 
 import com.itextpdf.text.Element;
-import com.itextpdf.text.Font;
 import com.itextpdf.text.Paragraph;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
+import lombok.Getter;
 import org.springframework.stereotype.Component;
 
 @Component
-@AllArgsConstructor
-@NoArgsConstructor
+@Getter
 public class UnderLineTextWarehouse {
 
-    private Paragraph paragraph;
+    private final FontFactoryCustom font = new FontFactoryCustom();
 
-    public Paragraph getUnderLineText1 (Font font) {
+    private final Paragraph UNDER_LINE_TEXT1 = new Paragraph("(указываются при необходимости требования к квалификации, полученной " +
+            "по результатам освоения дополнительной профессиональной программы профессиональной переподготовки с " +
+            "учетом области и вида деятельности)\n",font.getSmallFont());
 
-        paragraph = new Paragraph("(указываются при необходимости требования к квалификации, полученной " +
-                "по результатам освоения дополнительной профессиональной программы профессиональной переподготовки с " +
-                "учетом области и вида деятельности)\n",font);
-        paragraph.setAlignment(Element.ALIGN_CENTER);
-        paragraph.setLeading(font.getSize() * 1.2f);
-        paragraph.setIndentationLeft(125);
-        paragraph.setSpacingBefore(2);
-        paragraph.setSpacingAfter(0);
+    private final Paragraph UNDER_LINE_TEXT2 = new Paragraph("(указываются квалификационные требования к стажу гражданской службы или стажу работы по специальности, " +
+            "направлению подготовки, необходимому для замещения должности гражданской службы)\n",font.getSmallFont());
 
-        return paragraph;
+    {
+        UNDER_LINE_TEXT1.setAlignment(Element.ALIGN_CENTER);
+        UNDER_LINE_TEXT1.setLeading(font.getSmallFont().getSize() * 1.2f);
+        UNDER_LINE_TEXT1.setIndentationLeft(125);
+        UNDER_LINE_TEXT1.setSpacingBefore(2);
+        UNDER_LINE_TEXT1.setSpacingAfter(0);
+
+        UNDER_LINE_TEXT2.setAlignment(Element.ALIGN_CENTER);
+        UNDER_LINE_TEXT2.setLeading(font.getSmallFont().getSize() * 1.2f);
+        UNDER_LINE_TEXT2.setSpacingBefore(2);
+        UNDER_LINE_TEXT2.setSpacingAfter(0);
     }
-
-    public Paragraph getUnderLineText2 (Font font) {
-
-        paragraph = new Paragraph("(указываются квалификационные требования к стажу гражданской службы или стажу работы по специальности, " +
-                "направлению подготовки, необходимому для замещения должности гражданской службы)\n",font);
-        paragraph.setAlignment(Element.ALIGN_CENTER);
-        paragraph.setLeading(font.getSize() * 1.2f);
-        paragraph.setSpacingBefore(2);
-        paragraph.setSpacingAfter(0);
-
-        return paragraph;
-    }
-
-
 }

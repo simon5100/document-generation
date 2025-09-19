@@ -6,6 +6,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashMap;
+
 @RestController
 @RequiredArgsConstructor
 public class DocumentGenerationControllerImpl implements DocumentGenerationController {
@@ -15,16 +17,12 @@ public class DocumentGenerationControllerImpl implements DocumentGenerationContr
     @Override
     public ResponseEntity<byte[]> downlandFile(DocumentJobRegulationRequest request) {
 
-        byte[] bytes = documentGenerationService.generatedDocument(request);
+        HashMap<HttpHeaders, byte[]> documentContainer = documentGenerationService.generatedDocument(request);
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_PDF);
-        headers.setContentDisposition(
-                ContentDisposition.inline()
-                .filename("Dolznostnoi reglament CCZ .pdf")
-                .build());
-        headers.setContentLength(bytes.length);
+        HttpHeaders headers = documentContainer.keySet().stream().findFirst().get();
 
-        return new ResponseEntity<>(bytes, headers, HttpStatus.OK);
+        byte[] document = documentContainer.get(documentContainer.keySet().stream().findFirst().get());
+
+        return new ResponseEntity<>(document, headers, HttpStatus.OK);
     }
 }
