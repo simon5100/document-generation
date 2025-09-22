@@ -4,6 +4,7 @@ import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.simon.documentgeneration.dto.DocumentJobRegulationRequest;
+import com.simon.documentgeneration.exception.NullParameterInRequest;
 import com.simon.documentgeneration.util.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -37,6 +38,16 @@ public class DocumentGenerationServiceImpl implements DocumentGenerationService 
     @Override
     public HashMap<HttpHeaders, byte[]> generatedDocument(DocumentJobRegulationRequest request) {
         try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
+            if (request.getDistrictName() == null ||
+            request.getSectionNumber() == null ||
+            request.getJudgeName() == null ||
+            request.getJudgeOrganizerName() == null ||
+            request.getConcordantName() == null ||
+            request.getActingJudge() == null ||
+            request.getActingJudgeOrganizer() == null) {
+                throw new NullParameterInRequest();
+            }
+
             String wordGenitiveCase = declension.getGenitiveCase(request.getDistrictName());
             int sectionNumber = request.getSectionNumber();
 
@@ -106,8 +117,10 @@ public class DocumentGenerationServiceImpl implements DocumentGenerationService 
             documentContainer.put(headers, documentBytes);
 
             return documentContainer;
+        } catch (NullParameterInRequest e) {
+            throw e;
         } catch (Exception e) {
-            throw new RuntimeException("Непредвиденная ошибка");
+            throw new RuntimeException(e.getMessage());
         }
     }
 }
