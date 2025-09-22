@@ -15,7 +15,6 @@ import java.util.List;
 @Log4j2
 @Component
 @Getter
-@Setter
 public class ParagraphFactory {
 
     private static float singleInterval = 1.2f;
@@ -91,36 +90,38 @@ public class ParagraphFactory {
                 case "FootnotePage1":
                     paragraphs.add(lineFootnote);
                     paragraphs.add(footnotes.getFOOTNOTES_PAGE_1());
-                    continue;
+                    break;
                 case "FootnotePage2":
-                    lineFootnote.setSpacingBefore(20);
                     paragraphs.add(lineFootnote);
+                    lineFootnote.setSpacingBefore(20);
                     paragraphs.add(footnotes.getFOOTNOTES_PAGE_2());
-                    continue;
+                    break;
                 case "FootnotePage10":
                     paragraphs.add(lineFootnote);
                     paragraphs.add(footnotes.getFOOTNOTES_PAGE_10());
+                    break;
                 case "UnderLineText1":
                     paragraphs.add(underLineText.getUNDER_LINE_TEXT1());
-                    continue;
+                    break;
                 case "UnderLineText2":
                     paragraphs.add(underLineText.getUNDER_LINE_TEXT2());
-                    continue;
+                    break;
+                default:
+                    paragraph.add(chunk);
+
+                    if (chunk.getContent().lastIndexOf("\n") != -1) {
+                        paragraphs.add(paragraph);
+
+                        paragraph = new Paragraph();
+                        paragraph.setAlignment(Element.ALIGN_JUSTIFIED);
+                        paragraph.setFirstLineIndent(indentCM);
+                        paragraph.setLeading(font.getNORMAl_SIZE() * singleInterval);
+                        paragraph.setSpacingAfter(0);
+                        paragraph.setSpacingBefore(0);
+
+                    }
             }
 
-            paragraph.add(chunk);
-
-            if (chunk.getContent().lastIndexOf("\n") != -1) {
-                paragraphs.add(paragraph);
-
-                paragraph = new Paragraph();
-                paragraph.setAlignment(Element.ALIGN_JUSTIFIED);
-                paragraph.setFirstLineIndent(indentCM);
-                paragraph.setLeading(font.getNORMAl_SIZE() * singleInterval);
-                paragraph.setSpacingAfter(0);
-                paragraph.setSpacingBefore(0);
-
-            }
         }
         return paragraphs;
     }
@@ -146,8 +147,8 @@ public class ParagraphFactory {
                     paragraph.setAlignment(Element.ALIGN_LEFT);
                     cell.addElement(paragraph);
                     cell.setVerticalAlignment(Element.ALIGN_BOTTOM);
-                    break;
 
+                    break;
                 case 2:
                     //ФИО мирового судьи
                     paragraph = new Paragraph(footer[2]);
@@ -157,7 +158,6 @@ public class ParagraphFactory {
                     cell.addElement(paragraph);
                     cell.setVerticalAlignment(Element.ALIGN_BOTTOM);
                     break;
-
                 case 6:
                     //мировой судья организатор...
                     paragraph = new Paragraph(footer[3]);
@@ -167,8 +167,8 @@ public class ParagraphFactory {
                     cell.addElement(paragraph);
                     cell.setVerticalAlignment(Element.ALIGN_BOTTOM);
                     cell.setHorizontalAlignment(Element.ALIGN_LEFT);
-                    break;
 
+                    break;
                 case 8:
                     //ФИО мирового судьи организатора
                     paragraph = new Paragraph(footer[5]);
@@ -177,8 +177,8 @@ public class ParagraphFactory {
                     paragraph.setAlignment(Element.ALIGN_RIGHT);
                     cell.addElement(paragraph);
                     cell.setVerticalAlignment(Element.ALIGN_BOTTOM);
-                    break;
 
+                    break;
                 case 12:
                     //Начальник отдела правового...
                     paragraph = new Paragraph(footer[6]);
@@ -187,8 +187,8 @@ public class ParagraphFactory {
                     paragraph.setAlignment(Element.ALIGN_LEFT);
                     cell.addElement(paragraph);
                     cell.setVerticalAlignment(Element.ALIGN_BOTTOM);
-                    break;
 
+                    break;
                 case 14:
                     //ФИО Начальник отдела правового
                     paragraph = new Paragraph(footer[8]);
@@ -257,6 +257,7 @@ public class ParagraphFactory {
                     paragraph.setAlignment(Element.ALIGN_LEFT);
                     cell.addElement(paragraph);
                     cell.setVerticalAlignment(Element.ALIGN_TOP);
+
                     break;
 
                 case 15:
@@ -276,16 +277,16 @@ public class ParagraphFactory {
                     paragraph.setSpacingBefore(6);
                     paragraph.setAlignment(Element.ALIGN_LEFT);
                     cell.addElement(paragraph);
-                    break;
 
+                    break;
                 case 24:
                     paragraph = new Paragraph(footer[13]);
                     paragraph.setLeading(footer[13].getFont().getSize() * 1.2f);
                     paragraph.setSpacingBefore(6);
                     paragraph.setAlignment(Element.ALIGN_LEFT);
                     cell.addElement(paragraph);
-                    break;
 
+                    break;
                 case 27:
                     //"(должность гражданского служащего)"
                     paragraph = new Paragraph(footer[12]);
@@ -302,10 +303,11 @@ public class ParagraphFactory {
                     paragraph.setSpacingBefore(6);
                     paragraph.setAlignment(Element.ALIGN_LEFT);
                     cell.addElement(paragraph);
+
                     break;
 
                 default:
-                    throw new RuntimeException("В таблице нет ячейки под номером: " + i);
+                    throw new RuntimeException("что то случилось");
             }
 
             tableForFooter.addCell(cell);

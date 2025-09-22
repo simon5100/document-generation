@@ -1,13 +1,11 @@
 package com.simon.documentgeneration.util;
 
-import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
-@AllArgsConstructor
-public class ConvertPointsInCentimeter {
+public class ConvertPointsInCentimetr {
 
-    public float centimeter(float cm) {
+    public float centimetr(float cm) {
         return cm * 28.35f;
     }
 }

@@ -3,8 +3,6 @@ package com.simon.documentgeneration.util;
 import com.itextpdf.text.Chunk;
 import com.itextpdf.text.Font;
 import com.simon.documentgeneration.dto.DocumentJobRegulationRequest;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.List;

@@ -7,8 +7,12 @@ import com.simon.documentgeneration.dto.DocumentJobRegulationRequest;
 import com.simon.documentgeneration.util.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.http.ContentDisposition;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import java.io.ByteArrayOutputStream;
+import java.util.HashMap;
 import java.util.List;
 
 @Log4j2
@@ -17,7 +21,7 @@ import java.util.List;
 public class DocumentGenerationServiceImpl implements DocumentGenerationService  {
 
     private final FootnoteWarehouse footnotes;
-    private final ConvertPointsInCM pointsInCM;
+    private final ConvertPointsInCentimetr pointsInCM;
     private final FontFactoryCustom font;
     private final ParagraphFactory paragraphFactory;
     private final Chunks chunks;
@@ -26,8 +30,12 @@ public class DocumentGenerationServiceImpl implements DocumentGenerationService 
     private final TablesWarehouse tables;
     private final Declension declension;
 
+    private HttpHeaders headers;
+    private byte[] documentBytes;
+    private HashMap<HttpHeaders, byte[]> documentContainer;
+
     @Override
-    public byte[] generatedDocument(DocumentJobRegulationRequest request) {
+    public HashMap<HttpHeaders, byte[]> generatedDocument(DocumentJobRegulationRequest request) {
         try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
             String wordGenitiveCase = declension.getGenitiveCase(request.getDistrictName());
             int sectionNumber = request.getSectionNumber();
@@ -43,10 +51,10 @@ public class DocumentGenerationServiceImpl implements DocumentGenerationService 
 
 
             Document document = new Document(PageSize.A4,
-                    pointsInCM.cm(2.5F),
-                    pointsInCM.cm(1F),
-                    pointsInCM.cm(1F),
-                    pointsInCM.cm(2F));
+                    pointsInCM.centimetr(2.5F),
+                    pointsInCM.centimetr(1F),
+                    pointsInCM.centimetr(1F),
+                    pointsInCM.centimetr(2F));
 
             PdfWriter writer = PdfWriter.getInstance(document, baos);
             writer.setPageEvent(header);
@@ -68,7 +76,7 @@ public class DocumentGenerationServiceImpl implements DocumentGenerationService 
                                 sectionNumber,
                                 wordGenitiveCase
                         ),
-                        pointsInCM.cm(1.25f),
+                        pointsInCM.centimetr(1.25f),
                         footnotes,
                         font,
                         underLineText
@@ -81,8 +89,23 @@ public class DocumentGenerationServiceImpl implements DocumentGenerationService 
 
             document.add(tableFooter);
             document.close();
+            header.setNumberPage(1);
             log.info(baos.toByteArray().length);
-            return baos.toByteArray();
+
+            documentBytes = baos.toByteArray();
+
+            headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_PDF);
+            headers.setContentDisposition(
+                    ContentDisposition.inline()
+                            .filename("Dolznostnoi reglament CCZ .pdf")
+                            .build());
+            headers.setContentLength(documentBytes.length);
+
+            documentContainer = new HashMap<>();
+            documentContainer.put(headers, documentBytes);
+
+            return documentContainer;
         } catch (Exception e) {
             throw new RuntimeException("Непредвиденная ошибка");
         }
