@@ -11,8 +11,7 @@ import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 @Log4j2
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -24,10 +23,10 @@ public class DocumentGenerationServiceImplE2ETest {
 
     private DocumentJobRegulationRequest request;
 
-    @LocalServerPort  // Добавьте эту аннотацию
+    @LocalServerPort
     private int port;
 
-    private String url = "http://localhost:8081/api/documents/v1/generation/jobRegulation/secretarySession";
+    private String url;
 
     private ResponseEntity<byte[]> responseEntity;
 
@@ -67,6 +66,21 @@ class GeneratedDocumentTests {
             assertTrue(responseEntity.getStatusCode().isSameCodeAs(HttpStatus.OK));
             assertNotNull(responseEntity.getBody());
             assertTrue(responseEntity.getBody().length >= 21949 && responseEntity.getBody().length <= 21963);
+        }
+
+        @Test
+        @Tag("E2E")
+        @DisplayName("Тест с выбросом NullParameterInRequest")
+        void generatedDocumentNullParameterInRequestTest() {
+
+            request.setConcordantName(null);
+
+            responseError = restTemplate.postForEntity(url, request, ErrorResponse.class);
+
+            assertNotNull(responseError);
+            assertTrue(responseError.getStatusCode().isSameCodeAs(HttpStatus.BAD_REQUEST));
+            assertNotNull(responseError.getBody());
+            assertEquals(responseError.getBody().getMessage(), "Один или несколько параметров запроса (имя судь, судьи организатора, согласующего, райиона, номер участка, отметка о замещении судьи) отсутвует");
         }
     }
 }

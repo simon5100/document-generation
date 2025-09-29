@@ -22,7 +22,7 @@ import java.util.List;
 public class DocumentGenerationServiceImpl implements DocumentGenerationService  {
 
     private final FootnoteWarehouse footnotes;
-    private final ConvertPointsInCentimetr pointsInCM;
+    private final ConvertCentimetersToPoints pointsInCM;
     private final FontFactoryCustom font;
     private final ParagraphFactory paragraphFactory;
     private final Chunks chunks;
@@ -62,10 +62,10 @@ public class DocumentGenerationServiceImpl implements DocumentGenerationService 
 
 
             Document document = new Document(PageSize.A4,
-                    pointsInCM.centimetr(2.5F),
-                    pointsInCM.centimetr(1F),
-                    pointsInCM.centimetr(1F),
-                    pointsInCM.centimetr(2F));
+                    pointsInCM.convertCentimetersToPoints(2.5F),
+                    pointsInCM.convertCentimetersToPoints(1F),
+                    pointsInCM.convertCentimetersToPoints(1F),
+                    pointsInCM.convertCentimetersToPoints(2F));
 
             PdfWriter writer = PdfWriter.getInstance(document, baos);
             writer.setPageEvent(header);
@@ -87,7 +87,7 @@ public class DocumentGenerationServiceImpl implements DocumentGenerationService 
                                 sectionNumber,
                                 wordGenitiveCase
                         ),
-                        pointsInCM.centimetr(1.25f),
+                        pointsInCM.convertCentimetersToPoints(1.25f),
                         footnotes,
                         font,
                         underLineText

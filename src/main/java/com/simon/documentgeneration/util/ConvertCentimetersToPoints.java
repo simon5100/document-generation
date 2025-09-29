@@ -3,9 +3,9 @@ package com.simon.documentgeneration.util;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ConvertPointsInCentimetr {
+public class ConvertCentimetersToPoints {
 
-    public float centimetr(float cm) {
+    public float convertCentimetersToPoints(float cm) {
         return cm * 28.35f;
     }
 }

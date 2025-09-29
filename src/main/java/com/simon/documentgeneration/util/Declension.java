@@ -15,13 +15,8 @@ public class Declension {
 
         stringBuilder = new StringBuilder(word);
 
-
         stringBuilder.replace(word.length()-2, word.length(), "ого");
-
 
         return stringBuilder.toString();
     }
-
-
-
 }
